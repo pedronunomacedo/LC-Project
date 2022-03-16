@@ -1,5 +1,6 @@
 #include <lcom/lcf.h>
 #include <lcom/lab3.h>
+#include <keyboard.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -29,8 +30,35 @@ int main(int argc, char *argv[]) {
 }
 
 int(kbd_test_scan)() {
-	/* To be completed by the students */
-	printf("%s is not yet implemented!\n", __func__);
+
+	int ipc_status, r;
+  	message msg;
+
+	uint8_t kbd_bit_no;
+	kbd_subscribe_int(&kbd_bit_no);
+	uint8_t kbd_irq_set = BIT(kbd_bit_no);
+
+	while( 1 ) {
+    
+    if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+        printf("driver_receive failed with: %d", r);
+        continue;
+    }
+    if (is_ipc_notify(ipc_status)) { 
+		printf("ola?\n");
+      	switch (_ENDPOINT_P(msg.m_source)) {
+          	case HARDWARE: 
+				if (msg.m_notify.interrupts & kbd_irq_set) {
+					 
+				}
+				break;
+			default:
+				break; 
+		}
+		}
+	}
+
+	kbd_unsubscribe_int();
 
 	return 1;
 }
