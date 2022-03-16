@@ -45,7 +45,6 @@ int(kbd_test_scan)() {
         continue;
     }
     if (is_ipc_notify(ipc_status)) { 
-		printf("ola?\n");
       	switch (_ENDPOINT_P(msg.m_source)) {
           	case HARDWARE: 
 				if (msg.m_notify.interrupts & kbd_irq_set) {
