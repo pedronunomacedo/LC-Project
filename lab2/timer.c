@@ -5,7 +5,8 @@
 
 #include "i8254.h"
 
-int timer_hook_id = 0;
+static int timer_hook_id = 0;
+int counter = 0;
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   uint8_t st;
@@ -35,7 +36,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 int (timer_subscribe_int)(uint8_t *bit_no) {
 
   timer_hook_id = *bit_no = TIMER0_IRQ;
-  *bit_no = BIT(timer_hook_id);
 
   sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &timer_hook_id);
 
@@ -50,7 +50,7 @@ int (timer_unsubscribe_int)() {
 }
 
 void (timer_int_handler)() {
-
+  counter++;
 }
 
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
