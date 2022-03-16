@@ -11,6 +11,14 @@ int counter = 0;
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   uint8_t st;
 
+  int port = TIMER_0 + timer;
+
+  uint16_t set_freq = TIMER_FREQ / freq;
+
+  uint8_t msb, lsb;
+  util_get_MSB(set_freq,&msb);
+  util_get_LSB(set_freq,&lsb);
+
   if (timer_get_conf(timer, &st) != OK) {
     return !OK;
   }
@@ -19,16 +27,10 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   cmd = (st & 0xf) | TIMER_LSB_MSB | BIT(4) | (timer << 6);
 
-  sys_outb(TIMER_CTRL, cmd);
+  if (sys_outb(TIMER_CTRL, cmd) != OK) { return !OK; }
 
-  uint16_t set_freq = TIMER_FREQ / freq;
-
-  uint8_t msb, lsb;
-  util_get_MSB(set_freq,&msb);
-  util_get_LSB(set_freq,&lsb);
-
-  sys_outb(TIMER_0 + timer,lsb);
-  sys_outb(TIMER_0 + timer,msb);
+  if (sys_outb(port,lsb) != OK) { return !OK; }
+  if (sys_outb(port,msb) != OK) { return !OK; }
 
   return 1;
 }
@@ -37,14 +39,20 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
 
   timer_hook_id = *bit_no = TIMER0_IRQ;
 
-  sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &timer_hook_id);
+  if (sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &timer_hook_id) != OK) {
+    printf("Timer sys_irqsetpolicy failed");
+    return !OK;
+  }
 
   return OK;
 }
 
 int (timer_unsubscribe_int)() {
 
-  sys_irqrmpolicy(&timer_hook_id);
+  if (sys_irqrmpolicy(&timer_hook_id) != OK) {
+    printf("Timer sys_irqrmpolicy failed");
+    return !OK;
+  }
 
   return OK;
 }
@@ -111,7 +119,6 @@ int (timer_display_conf)(uint8_t timer, uint8_t st, enum timer_status_field fiel
       u.bcd = (st & BIT(0));
       break;
   }
-
   
   return timer_print_config(timer,field,u);
 }
