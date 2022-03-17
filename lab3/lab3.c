@@ -59,7 +59,6 @@ int(kbd_test_scan)() {
 							size++;
 
 							if (error) {
-								printf("ERRO CARALHO\n");
 								error = false;
 								break;
 							}
