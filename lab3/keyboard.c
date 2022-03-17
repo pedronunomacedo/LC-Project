@@ -22,6 +22,24 @@ int (kbd_unsubscribe_int)() {
 	return OK;
 }
 
-void (kbc_ih)(void) {
+uint8_t data = 0x0;
+bool error = false;
 
+void (kbc_ih)(void) {
+	uint8_t st;
+	if (util_sys_inb(KBC_ST_REG, &st) != OK) {
+		printf("Reading Status Register Failed");
+		return;
+	}
+
+	if (st & KBC_OBF) {
+		if (util_sys_inb(KBC_OUT_BUF,&data) != OK) {
+			printf("Reading Status Register Failed");
+			return;
+		}
+
+		if (st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR) {
+			error = true;
+		}
+	}
 }
