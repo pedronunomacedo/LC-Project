@@ -7,6 +7,7 @@
 
 extern uint8_t data;
 extern bool error;
+extern int counter;
 
 int main(int argc, char *argv[]) {
 	// sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -112,8 +113,65 @@ int(kbd_test_poll)() {
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {
-	/* To be completed by the students */
-	printf("%s is not yet implemented!\n", __func__);
+	int ipc_status, r;
+	message msg;
+
+	uint8_t kbd_bit_no, timer_bit_no;
+
+	timer_subscribe_int(&timer_bit_no);
+	uint8_t timer_irq_set = BIT(timer_bit_no);
+
+	kbd_subscribe_int(&kbd_bit_no);
+	uint8_t kbd_irq_set = BIT(kbd_bit_no);
+
+	uint8_t scancode[2], size = 0;
+
+	int max_ticks = n * 60;
+
+	while( data != KBD_ESQ_BC && counter < max_ticks) {
+
+    if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+			printf("driver_receive failed with: %d", r);
+			continue;
+    }
+
+    if (is_ipc_notify(ipc_status)) { 
+      	switch (_ENDPOINT_P(msg.m_source)) {
+					case HARDWARE: 
+
+						if (msg.m_notify.interrupts & timer_irq_set) {
+							timer_int_handler();
+						}
+
+						if (msg.m_notify.interrupts & kbd_irq_set) {
+							counter = 0;
+							kbc_ih();
+							scancode[size] = data;
+							size++;
+
+							if (error) {
+								error = false;
+								break;
+							}
+
+							if (data == KBD_TWOBYTE_CODE) { continue; }
+
+							kbd_print_scancode(!(scancode[size - 1] & KBD_MSB),size,scancode);
+
+							size = 0;
+						}
+						break;
+					default:
+						break; 
+			}
+		}
+	}
+
+	kbd_unsubscribe_int();
+
+	timer_unsubscribe_int();
+
+	return 0;
 
 	return 1;
 }

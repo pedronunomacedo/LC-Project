@@ -3,3 +3,4 @@ lab3
 lab3.o
 keyboard.o
 utils.o
+timer.o
