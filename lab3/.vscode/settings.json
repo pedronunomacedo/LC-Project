@@ -12,6 +12,7 @@
     "stdbool.h": "c",
     "lcf.h": "c",
     "stdint.h": "c",
-    "i8042.h": "c"
+    "i8042.h": "c",
+    "lab2.h": "c"
   },
 }

@@ -1,17 +1,17 @@
 #include <lcom/lcf.h>
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
-	/* To be completed by the students */
-	printf("%s is not yet implemented!\n", __func__);
+	if (lsb == NULL) { return !OK; }
 
-	return !OK;
+	*lsb = (uint8_t)(val);
+	return OK;
 }
 
-int(util_get_MSB)(uint16_t val, uint8_t *lsb) {
-	/* To be completed by the students */
-	printf("%s is not yet implemented!\n", __func__);
+int(util_get_MSB)(uint16_t val, uint8_t *msb) {
+	if (msb == NULL) { return !OK; }
 
-	return !OK;
+	*msb = (uint8_t)(val >> 8);
+	return OK;
 }
 
 int(util_sys_inb)(int port, uint8_t *value) {
