@@ -78,14 +78,37 @@ int(kbd_test_scan)() {
 
 	kbd_unsubscribe_int();
 
-	return 1;
+	return 0;
 }
 
 int(kbd_test_poll)() {
-	/* To be completed by the students */
-	printf("%s is not yet implemented!\n", __func__);
+	
+	uint8_t scancode[2], size = 0, data = 0x0;
 
-	return 1;
+	while ( data != KBD_ESQ_BC ) {
+		if (kbd_read_code(&data) != OK) {
+			size = 0;
+			continue;
+		}
+		scancode[size] = data;
+		size ++;
+
+		if (data == KBD_TWOBYTE_CODE) { 
+			tickdelay(micros_to_ticks(DELAY));
+			continue;
+		}
+
+		kbd_print_scancode(!(scancode[size - 1] & KBD_MSB),size,scancode);
+		size = 0;
+
+		tickdelay(micros_to_ticks(DELAY));
+	}
+
+	if (kbd_restore_interrupts() != OK) {
+		printf("interrupts restore failed");
+	}
+
+	return 0;
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {

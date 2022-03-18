@@ -43,3 +43,52 @@ void (kbc_ih)(void) {
 		}
 	}
 }
+
+int (kbd_read_code)(uint8_t * scancode) {
+	uint8_t st;
+	if (util_sys_inb(KBC_ST_REG, &st) != OK) {
+		printf("Reading Status Register Failed");
+		return !OK;
+	}
+
+	if ((st & KBC_OBF) && !(st & KBC_AUX)) {
+		if (util_sys_inb(KBC_OUT_BUF,scancode) != OK) {
+			printf("Reading Status Register Failed");
+			return !OK;
+		}
+
+		if (st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR) {
+			return !OK;
+		}
+	} else { return !OK; }
+
+	return OK;
+}
+
+int (kbd_restore_interrupts)() {
+	uint8_t cmd_byte;
+
+	if (sys_outb(KBC_CMD_REG,KBC_CMD_RCB) != OK) {
+		printf("writing 0x20 to command register failed");
+		return !OK;
+	} 
+
+	if (util_sys_inb(KBC_OUT_BUF, &cmd_byte) != OK) {
+		printf("reading command byte failed");
+		return !OK;
+	}
+
+	cmd_byte |= KBC_INT;
+
+	if (sys_outb(KBC_CMD_REG,KBC_CMD_WCB) != OK) {
+		printf("writing 0x20 to command register failed");
+		return !OK;
+	}
+
+	if (sys_outb(KBC_OUT_BUF,cmd_byte) != OK) {
+		printf("writing 0x20 to command register failed");
+		return !OK;
+	}
+
+	return OK;
+}
