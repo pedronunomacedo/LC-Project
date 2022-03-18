@@ -160,6 +160,7 @@ int(kbd_test_timed_scan)(uint8_t n) {
 
 							size = 0;
 						}
+						
 						break;
 					default:
 						break; 
@@ -172,6 +173,4 @@ int(kbd_test_timed_scan)(uint8_t n) {
 	timer_unsubscribe_int();
 
 	return 0;
-
-	return 1;
 }
