@@ -20,6 +20,7 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   util_get_LSB(set_freq,&lsb);
 
   if (timer_get_conf(timer, &st) != OK) {
+    printf("reading config failed");
     return !OK;
   }
 
