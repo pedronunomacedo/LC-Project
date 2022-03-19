@@ -33,7 +33,7 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   if (sys_outb(port,lsb) != OK) { return !OK; }
   if (sys_outb(port,msb) != OK) { return !OK; }
 
-  return 1;
+  return OK;
 }
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
