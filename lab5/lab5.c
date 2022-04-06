@@ -54,17 +54,18 @@ uint16_t width, uint16_t height, uint32_t color) {
   vg_draw_rectangle(x,y,width,height,color);
 
   wait_for_ESQ();
-  vg_exit();
-
-  return OK;
+  
+  return vg_exit();
 }
 
 int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, uint8_t step) {
-  /* To be completed */
-  printf("%s(0x%03x, %u, 0x%08x, %d): under construction\n", __func__,
-         mode, no_rectangles, first, step);
+  vg_init(mode);
 
-  return 1;
+  vg_draw_matrix(mode == MODE_RES_1024x768_BITS_8, no_rectangles, first, step);
+
+  wait_for_ESQ();
+
+  return vg_exit();
 }
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
