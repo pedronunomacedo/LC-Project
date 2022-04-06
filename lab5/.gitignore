@@ -1,5 +1,9 @@
 lab5
 lab5.o
+graphics.o
+keyboard.o
+my_utils.o
+utils.o
 .gdbinit
 trace.txt
 output.txt
