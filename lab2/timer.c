@@ -26,7 +26,7 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   uint8_t cmd = 0x0;
 
-  cmd = (st & 0xf) | TIMER_LSB_MSB | BIT(4) | (timer << 6);
+  cmd = (st & 0xf) | TIMER_LSB_MSB | (timer << 6);
 
   if (sys_outb(TIMER_CTRL, cmd) != OK) { return !OK; }
 

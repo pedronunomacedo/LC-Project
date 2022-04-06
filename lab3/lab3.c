@@ -7,7 +7,6 @@
 
 extern uint8_t data;
 extern bool error;
-extern int counter;
 
 int main(int argc, char *argv[]) {
 	// sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -113,6 +112,7 @@ int(kbd_test_poll)() {
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {
+	extern int counter;
 	int ipc_status, r;
 	message msg;
 
