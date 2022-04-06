@@ -2,6 +2,7 @@
 
 #include <lcom/lab5.h>
 #include <lcom/timer.h>
+#include <keyboard.h>
 #include <graphics.h>
 #include <my_utils.h>
 
@@ -46,12 +47,16 @@ int(video_test_init)(uint16_t mode, uint8_t delay) {
 }
 
 int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
-                          uint16_t width, uint16_t height, uint32_t color) {
-  /* To be completed */
-  printf("%s(0x%03X, %u, %u, %u, %u, 0x%08x): under construction\n",
-         __func__, mode, x, y, width, height, color);
+uint16_t width, uint16_t height, uint32_t color) {
+  
+  vg_init(mode);
 
-  return 1;
+  vg_draw_rectangle(x,y,width,height,color);
+
+  wait_for_ESQ();
+  vg_exit();
+
+  return OK;
 }
 
 int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, uint8_t step) {
