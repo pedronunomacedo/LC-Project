@@ -59,9 +59,7 @@ int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color) {
 
   int bytes_per_pixel = vmi.BytesPerScanLine / vmi.XResolution;
 
-  uint32_t cmd = 0x0;
-  for (int i = 0; i < vmi.BitsPerPixel; i++){ cmd |= BIT(i); } 
-  color &= cmd;
+  color &= set_bits(0,vmi.BitsPerPixel);
 
   memcpy(video_mem + bytes_per_pixel * (x + y * vmi.XResolution), &color, bytes_per_pixel);
 
@@ -89,17 +87,9 @@ int (vg_draw_matrix)(bool indexed_mode, uint8_t no_rectangles, uint32_t first, u
   uint8_t red, red_first, green, green_first, blue, blue_first;
 
   if (!indexed_mode) {
-    uint8_t red_bits = 0x0;
-    for (int i = 0; i < vmi.RedMaskSize; i++) { red_bits |= BIT(i); }
-    red_first = (first >> vmi.RedFieldPosition) & red_bits;
-
-    uint8_t green_bits = 0x0;
-    for (int i = 0; i < vmi.GreenMaskSize; i++) { green_bits |= BIT(i); }
-    green_first = (first >> vmi.GreenFieldPosition) & green_bits;
-
-    uint8_t blue_bits = 0x0;
-    for (int i = 0; i < vmi.BlueMaskSize; i++) { blue_bits |= BIT(i); }
-    blue_first = (first >> vmi.BlueFieldPosition) & blue_bits;
+    red_first = (first >> vmi.RedFieldPosition) & set_bits(0, vmi.RedMaskSize);
+    green_first = (first >> vmi.GreenFieldPosition) & set_bits(0, vmi.GreenMaskSize);
+    blue_first = (first >> vmi.BlueFieldPosition) & set_bits(0, vmi.BlueMaskSize);
   }
 
   for (int row = 0; row < no_rectangles; row++) {
@@ -122,4 +112,21 @@ int (vg_draw_matrix)(bool indexed_mode, uint8_t no_rectangles, uint32_t first, u
   }
 
   return OK;
+}
+
+int (vg_draw_sprite)(uint8_t * sprite, xpm_image_t img, uint16_t x, uint16_t y) {
+  for (int row = 0; row < img.height; row++) {
+    for (int col = 0; col < img.width; col++) {
+      if (vg_draw_pixel(x + col, y + row, sprite[(col + row * img.width)]) != OK) {
+        return !OK;
+      }
+    }
+  }
+  return OK;
+}
+
+uint32_t (set_bits)(uint8_t start, uint8_t end) {
+  uint32_t bits = 0x0;
+  for (int i = start; i < end; i++) { bits |= BIT(i); }
+  return bits;
 }
