@@ -69,17 +69,22 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 }
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u): under construction\n", __func__, xpm, x, y);
+  vg_init(MODE_RES_1024x768_BITS_8);
 
-  return 1;
+  xpm_image_t img;
+  uint8_t * sprite = xpm_load(xpm, XPM_INDEXED, &img);
+
+  vg_draw_sprite(sprite, img, x, y);
+
+  wait_for_ESQ();
+
+  return vg_exit();
 }
 
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u, %u, %u, %d, %u): under construction\n",
-         __func__, xpm, xi, yi, xf, yf, speed, fr_rate);
+ /* To be completed */
+  printf("%s(): under construction\n", __func__);
 
   return 1;
 }
