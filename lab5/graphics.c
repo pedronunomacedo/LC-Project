@@ -115,9 +115,14 @@ int (vg_draw_matrix)(bool indexed_mode, uint8_t no_rectangles, uint32_t first, u
 }
 
 int (vg_draw_sprite)(uint8_t * sprite, xpm_image_t img, uint16_t x, uint16_t y) {
+  int bytes_per_pixel = vmi.BytesPerScanLine / vmi.XResolution;
+  uint32_t color;
+
   for (int row = 0; row < img.height; row++) {
     for (int col = 0; col < img.width; col++) {
-      if (vg_draw_pixel(x + col, y + row, sprite[(col + row * img.width)]) != OK) {
+      memcpy(&color, sprite + (col + row * img.width), bytes_per_pixel);
+
+      if (vg_draw_pixel(x + col, y + row, color) != OK) {
         return !OK;
       }
     }
