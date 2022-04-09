@@ -9,27 +9,16 @@
 #include <stdint.h>
 #include <stdio.h>
 
-// Any header files included below this line should have been created by you
-
 int main(int argc, char *argv[]) {
-  // sets the language of LCF messages (can be either EN-US or PT-PT)
   lcf_set_language("EN-US");
 
-  // enables to log function invocations that are being "wrapped" by LCF
-  // [comment this out if you don't want/need it]
   lcf_trace_calls("/home/lcom/labs/lab5/trace.txt");
 
-  // enables to save the output of printf function calls on a file
-  // [comment this out if you don't want/need it]
   lcf_log_output("/home/lcom/labs/lab5/output.txt");
 
-  // handles control over to LCF
-  // [LCF handles command line arguments and invokes the right function]
   if (lcf_start(argc, argv))
     return 1;
 
-  // LCF clean up tasks
-  // [must be the last statement before return]
   lcf_cleanup();
 
   return 0;
@@ -83,15 +72,11 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
- /* To be completed */
-  printf("%s(): under construction\n", __func__);
 
   return 1;
 }
 
 int(video_test_controller)() {
-  /* To be completed */
-  printf("%s(): under construction\n", __func__);
 
   return 1;
 }
