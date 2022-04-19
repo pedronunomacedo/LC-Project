@@ -96,38 +96,41 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
   int y_translate = (yi <= yf) ? 1 : -1;  
   int frame_counter = -1 * speed;
 
-  while( !(xi == xf && yi == yf) && data != KBD_ESQ_BC ) {
+  while( data != KBD_ESQ_BC ) {
     
     if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
         printf("driver_receive failed with: %d", r);
         continue;
     }
+    
     if (is_ipc_notify(ipc_status)) { 
       switch (_ENDPOINT_P(msg.m_source)) {
           case HARDWARE: 
               if (msg.m_notify.interrupts & timer_irq_set) { 
-                timer_int_handler();
+                if ( !(xi == xf && yi == yf) ) {
+                  timer_int_handler();
 
-                if (counter % (60 / fr_rate) == 0) { 
-                  if (speed >= 0) { //displacement in pixels between consecutive frames
-                    if (xi == xf) { 
-                      yi += y_translate * speed;
-                    } else { 
-                      xi += x_translate * speed;
-                    }
-                  } else { //number of frames required for a displacement of one pixel
-                    frame_counter--;
-                    if (frame_counter == 0) {
+                  if (counter % (60 / fr_rate) == 0) { 
+                    if (speed >= 0) { //displacement in pixels between consecutive frames
                       if (xi == xf) { 
-                        yi += y_translate;
+                        yi += y_translate * speed;
                       } else { 
-                        xi += x_translate;
+                        xi += x_translate * speed;
                       }
-                      frame_counter = -1 * speed;
+                    } else { //number of frames required for a displacement of one pixel
+                      frame_counter--;
+                      if (frame_counter == 0) {
+                        if (xi == xf) { 
+                          yi += y_translate;
+                        } else { 
+                          xi += x_translate;
+                        }
+                        frame_counter = -1 * speed;
+                      }
                     }
+                    vg_draw_sprite(sprite, img, xi, yi);
                   }
                 }
-                  vg_draw_sprite(sprite, img, xi, yi);
               }
               if (msg.m_notify.interrupts & kbd_irq_set) { 
                 kbc_ih();
@@ -139,10 +142,11 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
     }
   }
 
+  vg_exit();
   kbd_unsubscribe_int();
   timer_unsubscribe_int();
 
-  return vg_exit();
+  return OK;
 }
 
 int(video_test_controller)() {

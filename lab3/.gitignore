@@ -4,3 +4,5 @@ lab3.o
 keyboard.o
 utils.o
 timer.o
+trace.txt
+output.txt
