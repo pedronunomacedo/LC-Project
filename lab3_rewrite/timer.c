@@ -18,7 +18,6 @@ int (timer_get_conf)(uint8_t timer, uint8_t *st) {
     printf("timer_get_conf: util_sys_inb failed");
     return !OK;
   }
-
   return OK;
 }
 
@@ -51,7 +50,6 @@ int (timer_display_conf)(uint8_t timer, uint8_t st,
     default:
       return !OK;
   }
-
   return timer_print_config(timer, field, u);
 }
 
@@ -85,7 +83,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
     printf("timer_set_frequency: sys_outb failed");
     return !OK;
   }
-
   return OK;
 }
 
