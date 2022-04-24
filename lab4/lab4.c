@@ -89,11 +89,11 @@ int (mouse_test_packet)(uint32_t cnt) {
       }
     }
   }
-  if (set_mouse_data_reporting(false) != OK) {
-    printf("mouse_test_packet: set_mouse_data_reporting failed\n");
+  if (mouse_unsubscribe_int() != OK) {
+    printf("mouse_test_packet: mouse_subscribe_int failed\n");
     return !OK;
   }
-  return mouse_unsubscribe_int();
+  return set_mouse_data_reporting(false);
 }
 
 int (mouse_test_async)(uint8_t idle_time) {
