@@ -108,3 +108,91 @@ struct packet (get_mouse_packet)(uint8_t * mouse_packet) {
 
   return pp;
 }
+
+static int x_delta;
+void (update_state)(struct packet pp, draw_state * state, uint8_t x_len, uint8_t tolerance) {
+  switch (*state)
+  {
+    case START:
+      if (check_only_lb(pp)) {
+        *state = LEFT;
+        x_delta = 0;
+      }
+      break;
+    
+    case LEFT:
+      if (pp.delta_x < -tolerance || pp.delta_y < -tolerance || !check_only_lb(pp)) {
+        *state = START;
+      } else {
+        x_delta += pp.delta_x;
+        if (x_delta >= x_len) {
+          *state = LEFT_COMPLETE;
+        }
+      }
+      break;
+    
+    case LEFT_COMPLETE:
+      if (pp.delta_x < -tolerance || pp.delta_y < -tolerance) {
+        *state = START;
+      } else if (check_none_pressed(pp)) {
+        *state = RIGHT_START;
+      } else if (check_only_lb(pp)) {
+        break;
+      } else {
+        *state = START;
+      }
+      break;
+
+    case RIGHT_START:
+      if (abs(pp.delta_x) > tolerance || abs(pp.delta_y) > tolerance) {
+        printf("1 - %d - %d\n", abs(pp.delta_x) > tolerance, abs(pp.delta_y) > tolerance);
+        *state = START;
+      } else if (check_only_rb(pp)) {
+        *state = RIGHT;
+        x_delta = 0;
+      } else if (check_none_pressed(pp)) {
+        break;
+      } else {
+        *state = START;
+      }
+      break;
+
+    case RIGHT:
+      if (pp.delta_x < -tolerance || pp.delta_y > tolerance || !check_only_rb(pp)) {
+        *state = START;
+      } else {
+        x_delta += pp.delta_x;
+        if (x_delta >= x_len) {
+          *state = RIGHT_COMPLETE;
+        }
+      }
+      break;
+    
+    case RIGHT_COMPLETE:
+      if (pp.delta_x < -tolerance || pp.delta_y > tolerance) {
+        *state = START;
+      } else if (check_none_pressed(pp)) {
+        *state = END;
+      } else if (check_only_rb(pp)) {
+        break;
+      } else {
+        *state = START;
+      }
+      break;
+
+    default:
+      break;
+  }
+}
+
+bool (check_only_lb)(struct packet pp) { 
+  return pp.lb && !pp.rb && !pp.mb;
+}
+
+bool (check_none_pressed)(struct packet pp) { 
+  return !pp.lb && !pp.rb && !pp.mb;
+}
+
+bool (check_only_rb)(struct packet pp) { 
+  return !pp.lb && pp.rb && !pp.mb;
+}
