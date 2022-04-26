@@ -129,6 +129,7 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
                       }
                     }
                     vg_draw_sprite(sprite, img, xi, yi);
+                    //vg_swap_buffers();
                   }
                 }
               }

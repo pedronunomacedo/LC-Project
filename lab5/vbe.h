@@ -11,6 +11,9 @@
 #define RETURN_VBE_MODE 0x01
 #define SET_VBE_MODE 0x02
 #define SET_TEXT_MODE 0x03
+#define AL_SET_VBE_START 0x07
+#define BL_SET_VBE_START 0x0
+#define CL_SET_VBE_START 0x0
 
 //vbe errors
 #define FUNCTION_CALL_FAILED 0x01
