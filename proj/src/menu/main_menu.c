@@ -16,4 +16,4 @@ int (draw_main_menu)(void) {
     return vg_draw_sprite(mouse_sprite->map, mouse_sprite->img, mouse_sprite->x, mouse_sprite->y);
 }
 
-sprite * get_mouse_sprite() { return mouse_sprite; }
+sprite * get_mouse_sprite_main_menu() { return mouse_sprite; }
