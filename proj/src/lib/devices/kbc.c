@@ -49,9 +49,9 @@ bool (check_keyboard_error)() { return keyboard_error; }
 
 //mouse
 int mouse_hook_id;
-static uint8_t mouse_data = 0x0;
-static bool mouse_error = false;
-static uint32_t mouse_x = 0, mouse_y = 0;
+static uint8_t mouse_data = 0x0, mouse_packet[3], counter = 0;
+static bool mouse_error = false, is_sync = false, mouse_packet_ready = false;
+static uint32_t mouse_x = 500, mouse_y = 50;
 
 void (mouse_ih)(void) {
 	uint8_t st;
@@ -69,6 +69,22 @@ void (mouse_ih)(void) {
 			mouse_error = true;
 		}
 	}
+
+	if (counter == 0 && (mouse_data & MOUSE_FLAG)) { mouse_packet_ready = false; is_sync = true; }
+
+	if (is_sync) {
+		mouse_packet[counter] = mouse_data;
+
+		if (counter == 2) {
+			is_sync = false;
+			counter = 0;
+			mouse_packet_ready = true;
+		} else { counter++; }
+	}
+}
+
+bool (check_mouse_ready)(void) {
+	return mouse_packet_ready;
 }
 
 int (mouse_subscribe_int)(uint8_t * bit_no) {
@@ -119,7 +135,7 @@ uint8_t (get_mouse_data)() { return mouse_data; }
 
 bool (check_mouse_error)() { return mouse_error; }
 
-struct packet (get_mouse_packet)(uint8_t * mouse_packet) {
+struct packet (get_mouse_packet)() {
 	struct packet pp;
 
 	for (int i = 0; i < 3; i++) { pp.bytes[i] = mouse_packet[i]; }
@@ -137,6 +153,11 @@ struct packet (get_mouse_packet)(uint8_t * mouse_packet) {
 uint32_t (get_mouse_pos_x)() { return mouse_x; }
 
 uint32_t (get_mouse_pos_y)() { return mouse_y; }
+
+void (set_mouse_pos)(uint32_t x_delta, uint32_t y_delta) { 
+	mouse_x += x_delta;
+	mouse_y -= y_delta;
+}
 
 bool (check_only_lb)(struct packet pp) { 
 	return pp.lb && !pp.rb && !pp.mb;

@@ -14,8 +14,22 @@ void (sprite_destroy)(sprite * sprite) {
     free(sprite);
 }
 
-void (sprite_set_pos)(sprite * sprite, uint8_t x, u_int8_t y) {
+void (sprite_set_pos)(sprite * sprite, uint32_t x, uint32_t y) {
     sprite->x = x;
     sprite->y = y;
+}
+
+void (sprite_set_pos_delta)(sprite * sprite, int x_delta, int y_delta) {
+    if ((int)sprite->x + x_delta + sprite->img.width > WINDOW_WIDTH) {
+        sprite->x = WINDOW_WIDTH - sprite->img.width;
+    } else if ((int)sprite->x + x_delta < 0) {
+        sprite->x = 0;
+    } else { sprite->x += x_delta; }
+
+    if ((int)sprite->y - y_delta + sprite->img.height > WINDOW_HEIGHT) {
+        sprite->y = WINDOW_HEIGHT - sprite->img.height;
+    } else if ((int)sprite->y - y_delta < 0) {
+        sprite->y = 0;
+    } else { sprite->y -= y_delta; }
 }
 
