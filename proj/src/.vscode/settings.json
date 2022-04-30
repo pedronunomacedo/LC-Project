@@ -16,6 +16,7 @@
     "timer.h": "c",
     "sprite.h": "c",
     "*.xpm": "c",
-    "main_menu.h": "c"
+    "main_menu.h": "c",
+    "events.h": "c"
   },
 }
