@@ -29,6 +29,10 @@ bool (check_mouse_error)(void);
 
 struct packet (get_mouse_packet)(uint8_t * mouse_packet);
 
+uint32_t (get_mouse_pos_x)();
+
+uint32_t (get_mouse_pos_y)();
+
 bool (check_only_rb)(struct packet pp);
 
 bool (check_only_lb)(struct packet pp);
