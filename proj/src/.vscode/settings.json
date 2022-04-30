@@ -11,6 +11,7 @@
     "graphics.h": "c",
     "int86.h": "c",
     "mman.h": "c",
-    "proj.h": "c"
+    "proj.h": "c",
+    "vbe.h": "c"
   },
 }
