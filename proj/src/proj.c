@@ -43,7 +43,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	
 	struct packet mouse_pp;
 
-	if (initialize_main_menu(get_mouse_pos_x(),get_mouse_pos_y()) != OK) { return !OK; }
+	if (initialize_main_menu(400,400) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -63,8 +63,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 
 					if (msg.m_notify.interrupts & keyboard_irq_set) {
 						kbd_ih();
-						if (get_keyboard_data() == 0x81) {
-							game_state = QUIT;
+						if (check_keyboard_ready()) {
+							if (get_keyboard_scancode() == 0x81) {
+								game_state = QUIT;
+							}
 						}
 					}
 

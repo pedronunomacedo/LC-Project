@@ -3,23 +3,32 @@
 //keyboard
 static int kbd_hook_id;
 static uint8_t keyboard_data = 0x0;
-static bool keyboard_error = false;
+static uint8_t scancode[2], size = 0;
+static bool keyboard_scancode_ready = false;
 
 void (kbd_ih)(void) {
-	keyboard_error = false;
+	keyboard_scancode_ready = false;
+	if (size == 0) { bzero(scancode,2); }
 	uint8_t st;
 	if (get_status_register(&st) != OK) {
 		printf("mouse_ih: util_sys_inb failed\n");
+		return;
 	}
 
-	if (st & KBC_OBF) {
+	if (st & KBC_OBF && !(st & KBC_AUX)) {
 		if (util_sys_inb(KBC_OUT_BUF,&keyboard_data) != OK) {
 			printf("Reading Status Register Failed");
 			return;
 		}
 
-		if (st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR) {
-			keyboard_error = true;
+		if (!(st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR)) {
+			scancode[size] = keyboard_data;
+			size++;
+
+			if (keyboard_data == KBC_TWOBYTE_CODE) return;
+
+			size = 0;
+			keyboard_scancode_ready = true;
 		}
 	}
 }
@@ -43,15 +52,14 @@ int (kbd_unsubscribe_int)() {
 	return OK;
 }
 
-uint8_t (get_keyboard_data)() { return keyboard_data; }
+uint16_t (get_keyboard_scancode)(void) { return scancode[0] + (scancode[1] << 8); }
 
-bool (check_keyboard_error)() { return keyboard_error; }
+bool (check_keyboard_ready)(void) { return keyboard_scancode_ready; }
 
 //mouse
 int mouse_hook_id;
-static uint8_t mouse_data = 0x0, mouse_packet[3], counter = 0;
-static bool mouse_error = false, is_sync = false, mouse_packet_ready = false;
-static uint32_t mouse_x = 500, mouse_y = 50;
+static uint8_t mouse_data = 0x0, mouse_packet[3], mouse_packet_counter = 0;
+static bool mouse_error = false, mouse_is_sync = false, mouse_packet_ready = false;
 
 void (mouse_ih)(void) {
 	uint8_t st;
@@ -65,27 +73,26 @@ void (mouse_ih)(void) {
 			printf("mouse_ih: util_sys_inb failed\n");
 		}
 
-		if (st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR) {
-			mouse_error = true;
+		if (!(st & KBC_PARITY_ERR || st & KBC_TIMEOUT_ERR)) {
+			if (mouse_packet_counter == 0 && (mouse_data & MOUSE_FLAG)) { 
+				mouse_packet_ready = false; 
+				mouse_is_sync = true; 
+			}
+
+			if (mouse_is_sync) {
+				mouse_packet[mouse_packet_counter] = mouse_data;
+
+				if (mouse_packet_counter == 2) {
+					mouse_is_sync = false;
+					mouse_packet_counter = 0;
+					mouse_packet_ready = true;
+				} else { mouse_packet_counter++; }
+			}
 		}
 	}
-
-	if (counter == 0 && (mouse_data & MOUSE_FLAG)) { mouse_packet_ready = false; is_sync = true; }
-
-	if (is_sync) {
-		mouse_packet[counter] = mouse_data;
-
-		if (counter == 2) {
-			is_sync = false;
-			counter = 0;
-			mouse_packet_ready = true;
-		} else { counter++; }
-	}
 }
 
-bool (check_mouse_ready)(void) {
-	return mouse_packet_ready;
-}
+bool (check_mouse_ready)(void) { return mouse_packet_ready; }
 
 int (mouse_subscribe_int)(uint8_t * bit_no) {
 	*bit_no = mouse_hook_id = MOUSE_IRQ;
@@ -131,10 +138,6 @@ int (set_mouse_data_reporting)(bool enable) {
 	return OK;
 }
 
-uint8_t (get_mouse_data)() { return mouse_data; }
-
-bool (check_mouse_error)() { return mouse_error; }
-
 struct packet (get_mouse_packet)() {
 	struct packet pp;
 
@@ -148,27 +151,6 @@ struct packet (get_mouse_packet)() {
 	pp.y_ov = (mouse_packet[0] & MOUSE_Y_OVFL);
 
 	return pp;
-}
-
-uint32_t (get_mouse_pos_x)() { return mouse_x; }
-
-uint32_t (get_mouse_pos_y)() { return mouse_y; }
-
-void (set_mouse_pos)(uint32_t x_delta, uint32_t y_delta) { 
-	mouse_x += x_delta;
-	mouse_y -= y_delta;
-}
-
-bool (check_only_lb)(struct packet pp) { 
-	return pp.lb && !pp.rb && !pp.mb;
-}
-
-bool (check_none_pressed)(struct packet pp) { 
-	return !pp.lb && !pp.rb && !pp.mb;
-}
-
-bool (check_only_rb)(struct packet pp) { 
-	return !pp.lb && pp.rb && !pp.mb;
 }
 
 // kbc

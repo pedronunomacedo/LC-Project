@@ -10,9 +10,9 @@ int (kbd_subscribe_int)(uint8_t *bit_no);
 
 int (kbd_unsubscribe_int)();
 
-uint8_t (get_keyboard_data)(void);
+uint16_t (get_keyboard_scancode)(void);
 
-bool (check_keyboard_error)(void);
+bool (check_keyboard_ready)(void);
 
 //mouse
 void (mouse_ih)(void);
@@ -25,23 +25,7 @@ int (mouse_unsubscribe_int)(void);
 
 int (set_mouse_data_reporting)(bool enable);
 
-uint8_t (get_mouse_data)(void);
-
-bool (check_mouse_error)(void);
-
 struct packet (get_mouse_packet)();
-
-uint32_t (get_mouse_pos_x)();
-
-uint32_t (get_mouse_pos_y)();
-
-void (set_mouse_pos)(uint32_t x_delta, uint32_t y_delta);
-
-bool (check_only_rb)(struct packet pp);
-
-bool (check_only_lb)(struct packet pp);
-
-bool ((check_none_pressed))(struct packet pp);
 
 //kbc
 int (get_status_register)(uint8_t * st);
