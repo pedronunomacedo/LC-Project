@@ -1,5 +1,8 @@
 #include "timer.h"
 
+static int timer_hook_id;
+static uint32_t timer_counter = 0;
+
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
 	uint8_t rbc = 0x0;
 	rbc |= TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(timer);
@@ -84,7 +87,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 	return OK;
 }
 
-int timer_hook_id;
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
 	*bit_no = timer_hook_id = TIMER0_IRQ;
@@ -103,8 +105,10 @@ int (timer_unsubscribe_int)() {
 	return OK;
 }
 
-int counter = 0;
-
 void (timer_int_handler)() {
-	counter++;
+	timer_counter++;
+}
+
+uint32_t (get_timer_counter)(void) {
+	return timer_counter;
 }

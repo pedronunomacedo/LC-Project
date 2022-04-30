@@ -82,3 +82,5 @@ int(timer_print_config)(uint8_t timer, enum timer_status_field field,
  * @return Returns the current time count
  */
 uint32_t(timer_print_elapsed_time)();
+
+uint32_t (get_timer_counter)(void);
