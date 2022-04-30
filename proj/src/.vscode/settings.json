@@ -13,6 +13,9 @@
     "mman.h": "c",
     "proj.h": "c",
     "vbe.h": "c",
-    "timer.h": "c"
+    "timer.h": "c",
+    "sprite.h": "c",
+    "*.xpm": "c",
+    "main_menu.h": "c"
   },
 }

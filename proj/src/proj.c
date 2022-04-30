@@ -7,6 +7,7 @@
 #include "lib/devices/vbe.h"
 
 #include "events/events.h"
+#include "menu/main_menu.h"
 
 #define FPS 60
 
@@ -48,6 +49,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	message msg;
 	GAME_STATE game_state = MAIN_MENU;
 
+	if (initialize_main_menu(100,100) != OK) { return !OK; }
+	if (draw_main_menu() != OK) { return !OK; }
+
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
 			printf("driver_receive failed with: %d", r);
@@ -59,15 +63,18 @@ int (proj_main_loop)(int argc, char *argv[]) {
 				case HARDWARE: 
 
 					if (msg.m_notify.interrupts & timer_irq_set) {
-						game_state = QUIT; //TODO: handle timer interrupt
+						timer_int_handler();
+						if (get_timer_counter() > FPS){
+							game_state = QUIT;
+						}
 					}
 
 					if (msg.m_notify.interrupts & keyboard_irq_set) {
-						game_state = QUIT; //TODO: handle keyboard interrupt
+						//game_state = QUIT; //TODO: handle keyboard interrupt
 					}
 
 					if (msg.m_notify.interrupts & mouse_irq_set) {
-						game_state = QUIT; //TODO: handle mouse interrupt
+						//game_state = QUIT; //TODO: handle mouse interrupt
 					}
 					break;
 				default:

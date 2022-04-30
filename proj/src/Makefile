@@ -3,10 +3,12 @@ PROG=proj
 
 .PATH: ${.CURDIR}
 .PATH: ${.CURDIR}/lib/devices
+.PATH: ${.CURDIR}/lib/sprite
 .PATH: ${.CURDIR}/lib/utils
+.PATH: ${.CURDIR}/menu
 
 # source code files to be compiled
-SRCS = proj.c timer.c kbc.c graphics.c utils.c
+SRCS = proj.c timer.c kbc.c graphics.c sprite.c main_menu.c utils.c
 
 # additional compilation flags
 # "-Wall -Wextra -Werror -I . -std=c11 -Wno-unused-parameter" are already set

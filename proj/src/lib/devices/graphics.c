@@ -84,6 +84,8 @@ int (vg_swap_buffers)() {
 int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color) {
 	color &= set_bits(0,vmi.BitsPerPixel);
 
+	if (color == TRANSPARENCY_COLOR_8_8_8_8) { return OK; }
+
 	memcpy(video_mem[current_buffer] + bytes_per_pixel * (x + y * vmi.XResolution),
 				 &color, bytes_per_pixel);
 
@@ -104,40 +106,6 @@ int (vg_draw_rectangle)(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
 	return OK;
 }
 
-int (vg_draw_matrix)(bool indexed_mode, uint8_t no_rectangles, uint32_t first, uint8_t step) {
-	uint16_t width = vmi.XResolution / no_rectangles;
-	uint16_t height = vmi.YResolution / no_rectangles;
-	uint32_t color;
-	uint8_t red, red_first, green, green_first, blue, blue_first;
-
-	if (!indexed_mode) {
-		red_first = (first >> vmi.RedFieldPosition) & set_bits(0, vmi.RedMaskSize);
-		green_first = (first >> vmi.GreenFieldPosition) & set_bits(0, vmi.GreenMaskSize);
-		blue_first = (first >> vmi.BlueFieldPosition) & set_bits(0, vmi.BlueMaskSize);
-	}
-
-	for (int row = 0; row < no_rectangles; row++) {
-		for (int col = 0; col < no_rectangles; col++) {
-			if (indexed_mode) {
-				color = (first + (row * no_rectangles + col) * step) % (1 << vmi.BitsPerPixel) ;
-			} else {
-				red = (red_first + col * step) % (1 << vmi.RedMaskSize);
-				green = (green_first + row * step) % (1 << vmi.GreenMaskSize);
-				blue = (blue_first + (col + row) * step) % (1 << vmi.BlueMaskSize);
-				
-				color = (red << vmi.RedFieldPosition) | 
-								(green << vmi.GreenFieldPosition) | 
-								(blue << vmi.BlueFieldPosition);
-			}
-
-			if (vg_draw_rectangle(col * width, row * height, width, height, color) != OK) { return !OK; }
-			
-		}
-	}
-
-	return OK;
-}
-
 int (vg_draw_sprite)(uint8_t * sprite, xpm_image_t img, uint16_t x, uint16_t y) {
 	uint32_t color;
 
@@ -145,7 +113,7 @@ int (vg_draw_sprite)(uint8_t * sprite, xpm_image_t img, uint16_t x, uint16_t y) 
 
 	for (int row = 0; row < img.height; row++) {
 		for (int col = 0; col < img.width; col++) {
-			memcpy(&color, sprite + (col + row * img.width), bytes_per_pixel);
+			memcpy(&color, sprite + bytes_per_pixel*(col + row * img.width), bytes_per_pixel);
 
 			if (vg_draw_pixel(x + col, y + row, color) != OK) {
 				return !OK;

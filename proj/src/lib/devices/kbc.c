@@ -51,6 +51,7 @@ bool (check_keyboard_error)() { return keyboard_error; }
 int mouse_hook_id;
 static uint8_t mouse_data = 0x0;
 static bool mouse_error = false;
+static uint32_t mouse_x = 0, mouse_y = 0;
 
 void (mouse_ih)(void) {
 	uint8_t st;
@@ -132,6 +133,10 @@ struct packet (get_mouse_packet)(uint8_t * mouse_packet) {
 
 	return pp;
 }
+
+uint32_t (get_mouse_pos_x)() { return mouse_x; }
+
+uint32_t (get_mouse_pos_y)() { return mouse_y; }
 
 bool (check_only_lb)(struct packet pp) { 
 	return pp.lb && !pp.rb && !pp.mb;
