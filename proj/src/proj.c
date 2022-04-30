@@ -8,6 +8,8 @@
 
 #include "events/events.h"
 
+#define FPS 60
+
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
 	lcf_trace_calls("/home/lcom/labs/proj/trace.txt");
@@ -23,6 +25,11 @@ int (proj_main_loop)(int argc, char *argv[]) {
 
 	if (set_mouse_data_reporting(true) != OK) {
 		printf("proj_main_loop: set_mouse_data_reporting(true) failed\n");
+		return !OK;
+	}
+
+	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) {
+		printf("proj_main_loop: timer_set_frequency failed\n");
 		return !OK;
 	}
 

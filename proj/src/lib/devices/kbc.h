@@ -23,8 +23,6 @@ int (mouse_unsubscribe_int)(void);
 
 int (set_mouse_data_reporting)(bool enable);
 
-void (wait_for_IB_is_clear)();
-
 uint8_t (get_mouse_data)(void);
 
 bool (check_mouse_error)(void);
@@ -37,8 +35,7 @@ bool (check_only_lb)(struct packet pp);
 
 bool ((check_none_pressed))(struct packet pp);
 
-
 //kbc
-void (kbc_ih)(void);
-
 int (get_status_register)(uint8_t * st);
+
+void (wait_for_IB_is_clear)();
