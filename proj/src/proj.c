@@ -74,7 +74,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 						mouse_ih();
 						if (check_mouse_ready()) {
 							mouse_pp = get_mouse_packet();
-							sprite_set_pos_delta(get_mouse_sprite(), 
+							sprite_set_pos_delta(get_mouse_sprite_main_menu(), 
 													mouse_pp.delta_x,
 													mouse_pp.delta_y);
 						}
@@ -86,18 +86,12 @@ int (proj_main_loop)(int argc, char *argv[]) {
 		}
 	}
 
-	sprite_destroy(get_mouse_sprite());
+	sprite_destroy(get_mouse_sprite_main_menu());
 
-	if (mouse_unsubscribe_int() != OK ||
-			kbd_unsubscribe_int() != OK ||
-			timer_unsubscribe_int() != OK) {
-		printf("proj_main_loop: unsubscribe failed\n");
-		return !OK;
-	}
-	if (set_mouse_data_reporting(false) != OK) {
-		printf("proj_main_loop: set_mouse_data_reporting(false) failed\n");
-		return !OK;
-	}
-	vg_exit();
-	return OK;
+	mouse_unsubscribe_int();
+	kbd_unsubscribe_int();
+	timer_unsubscribe_int();
+	set_mouse_data_reporting(false);
+	
+	return vg_exit();;
 }
