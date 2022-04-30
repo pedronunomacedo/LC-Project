@@ -12,6 +12,7 @@
     "int86.h": "c",
     "mman.h": "c",
     "proj.h": "c",
-    "vbe.h": "c"
+    "vbe.h": "c",
+    "timer.h": "c"
   },
 }
