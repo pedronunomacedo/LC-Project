@@ -10,6 +10,7 @@
     "lcf.h": "c",
     "graphics.h": "c",
     "int86.h": "c",
-    "mman.h": "c"
+    "mman.h": "c",
+    "proj.h": "c"
   },
 }
