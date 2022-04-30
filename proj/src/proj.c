@@ -24,16 +24,14 @@ int main(int argc, char *argv[]) {
 
 int (proj_main_loop)(int argc, char *argv[]) {
 	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
-
 	if (set_mouse_data_reporting(true) != OK) { return !OK; }
-
 	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
 
 	uint8_t timer_bit_no, keyboard_bit_no, mouse_bit_no;
-	timer_subscribe_int(&timer_bit_no);
-	kbd_subscribe_int(&keyboard_bit_no);
-	mouse_subscribe_int(&mouse_bit_no);
-	uint32_t timer_irq_set = BIT(timer_bit_no), 
+	if (timer_subscribe_int(&timer_bit_no) != OK) { return !OK; }
+	if (kbd_subscribe_int(&keyboard_bit_no) != OK) { return !OK; }
+	if (mouse_subscribe_int(&mouse_bit_no) != OK) { return !OK; }
+	uint32_t 	timer_irq_set = BIT(timer_bit_no), 
 				keyboard_irq_set = BIT(keyboard_bit_no),
 				mouse_irq_set = BIT(mouse_bit_no);
 
@@ -41,8 +39,6 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	message msg;
 	GAME_STATE game_state = MAIN_MENU;
 	
-	struct packet mouse_pp;
-
 	if (initialize_main_menu(400,400) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
@@ -57,6 +53,13 @@ int (proj_main_loop)(int argc, char *argv[]) {
 
 					if (msg.m_notify.interrupts & timer_irq_set) {
 						timer_int_handler();
+						switch (game_state)	{
+							case MAIN_MENU:
+								game_state = handle_timer_main_menu();
+								break;
+							default:
+								break;
+						}
 						if (draw_main_menu() != OK) { return !OK; }
 						vg_swap_buffers();
 					}
@@ -64,8 +67,12 @@ int (proj_main_loop)(int argc, char *argv[]) {
 					if (msg.m_notify.interrupts & keyboard_irq_set) {
 						kbd_ih();
 						if (check_keyboard_ready()) {
-							if (get_keyboard_scancode() == 0x81) {
-								game_state = QUIT;
+							switch (game_state) {
+								case MAIN_MENU:
+									game_state = handle_keyboard_main_menu(get_keyboard_scancode());
+									break;
+								default:
+									break;
 							}
 						}
 					}
@@ -73,10 +80,13 @@ int (proj_main_loop)(int argc, char *argv[]) {
 					if (msg.m_notify.interrupts & mouse_irq_set) {
 						mouse_ih();
 						if (check_mouse_ready()) {
-							mouse_pp = get_mouse_packet();
-							sprite_set_pos_delta(get_mouse_sprite_main_menu(), 
-													mouse_pp.delta_x,
-													mouse_pp.delta_y);
+							switch (game_state) {
+								case MAIN_MENU:
+									game_state = handle_mouse_main_menu(get_mouse_packet());
+									break;
+								default:
+									break;
+							}
 						}
 					}
 					break;
@@ -88,10 +98,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 
 	sprite_destroy(get_mouse_sprite_main_menu());
 
-	mouse_unsubscribe_int();
-	kbd_unsubscribe_int();
-	timer_unsubscribe_int();
-	set_mouse_data_reporting(false);
+	if (mouse_unsubscribe_int() != OK) { return !OK; }
+	if (kbd_unsubscribe_int() != OK) { return !OK; }
+	if (timer_unsubscribe_int() != OK) { return !OK; }
+	if (set_mouse_data_reporting(false) != OK) { return !OK; }
 	
-	return vg_exit();;
+	return vg_exit();
 }
