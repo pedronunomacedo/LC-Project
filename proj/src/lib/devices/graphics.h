@@ -6,7 +6,7 @@
 
 #include "vbe.h"
 
-int (set_video_mode)(uint16_t mode);
+int (vg_set_video_mode)(uint16_t mode);
 
 void * (vg_init)(uint16_t mode);
 

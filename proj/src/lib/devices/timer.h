@@ -74,7 +74,7 @@ int(timer_display_conf)(uint8_t timer, uint8_t st, enum timer_status_field field
  * @return Returns 0 upon success and non-zero otherwise 
  */
 int(timer_print_config)(uint8_t timer, enum timer_status_field field,
-                        union timer_status_field_val val);
+						union timer_status_field_val val);
 
 /**
  * @brief Increments elapsed time count
