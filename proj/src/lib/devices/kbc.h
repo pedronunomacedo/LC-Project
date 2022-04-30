@@ -17,6 +17,8 @@ bool (check_keyboard_error)(void);
 //mouse
 void (mouse_ih)(void);
 
+bool (check_mouse_ready)(void);
+
 int (mouse_subscribe_int)(uint8_t * bit_no);
 
 int (mouse_unsubscribe_int)(void);
@@ -27,11 +29,13 @@ uint8_t (get_mouse_data)(void);
 
 bool (check_mouse_error)(void);
 
-struct packet (get_mouse_packet)(uint8_t * mouse_packet);
+struct packet (get_mouse_packet)();
 
 uint32_t (get_mouse_pos_x)();
 
 uint32_t (get_mouse_pos_y)();
+
+void (set_mouse_pos)(uint32_t x_delta, uint32_t y_delta);
 
 bool (check_only_rb)(struct packet pp);
 
