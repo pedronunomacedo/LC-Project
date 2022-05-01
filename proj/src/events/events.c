@@ -16,5 +16,10 @@ GAME_STATE (handle_keyboard_main_menu)(uint16_t scancode) {
 
 GAME_STATE (handle_mouse_main_menu)(struct packet pp) {
     sprite_set_pos_delta(get_mouse_sprite_main_menu(), pp.delta_x, pp.delta_y);
+    if (pp.lb) {
+        if (check_mouse_in_button(get_quit_sprite_main_menu())) {
+            return QUIT;
+        }
+    }
     return MAIN_MENU;
 }

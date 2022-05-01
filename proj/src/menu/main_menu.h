@@ -15,3 +15,9 @@ int (draw_main_menu)(void);
 bool (check_mouse_in_button)(struct sprite * button);
 
 sprite * get_mouse_sprite_main_menu();
+
+sprite * get_play_sprite_main_menu();
+
+sprite * get_rules_sprite_main_menu();
+
+sprite * get_quit_sprite_main_menu();
