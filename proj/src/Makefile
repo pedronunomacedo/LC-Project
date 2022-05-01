@@ -12,8 +12,7 @@ PROG=proj
 SRCS = proj.c events.c timer.c kbc.c graphics.c sprite.c main_menu.c utils.c
 
 # additional compilation flags
-# "-Wall -Wextra -Werror -I . -std=c11 -Wno-unused-parameter" are already set
-CFLAGS += -pedantic
+CPPFLAGS += -pedantic -D __LCOM_OPTIMIZED__
 
 # list of library dependencies
 DPADD += ${LIBLCF}

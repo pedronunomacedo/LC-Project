@@ -76,14 +76,12 @@ int (vg_swap_buffers)() {
 		printf("vg_swap_buffers: sys_int86() failed");
 		return !OK;
 	}
-
+	
 	current_buffer = (current_buffer + 1) % 2;
 	return OK;
 }
 
 int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color) {
-	color &= set_bits(0,vmi.BitsPerPixel);
-
 	if (color == TRANSPARENCY_COLOR_8_8_8_8) { return OK; }
 
 	memcpy(video_mem[current_buffer] + bytes_per_pixel * (x + y * vmi.XResolution),
@@ -106,18 +104,30 @@ int (vg_draw_rectangle)(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
 	return OK;
 }
 
-int (vg_draw_sprite)(uint8_t * sprite, xpm_image_t img, uint16_t x, uint16_t y) {
+int (vg_draw_sprite)(struct sprite * sprite) {
 	uint32_t color;
+	
+	for (int row = 0; row < sprite->img.height; row++) {
+		for (int col = 0; col < sprite->img.width; col++) {
+			memcpy(&color, sprite->map + bytes_per_pixel*(col + row * sprite->img.width), bytes_per_pixel);
 
-	bzero(video_mem[current_buffer], vram_size);
-
-	for (int row = 0; row < img.height; row++) {
-		for (int col = 0; col < img.width; col++) {
-			memcpy(&color, sprite + bytes_per_pixel*(col + row * img.width), bytes_per_pixel);
-
-			if (vg_draw_pixel(x + col, y + row, color) != OK) {
+			if (vg_draw_pixel(sprite->x + col, sprite->y + row, color) != OK) {
 				return !OK;
 			}
+		}
+	}
+	return OK;
+}
+
+int (vg_draw_sprite_no_checks)(struct sprite * sprite) {
+	if (sprite->img.height == vmi.YResolution && sprite->img.width == vmi.XResolution) {
+		memcpy(video_mem[current_buffer], sprite->map, vram_size);
+	} else {
+		for (int row = 0; row < sprite->img.height; row++) {
+			memcpy(video_mem[current_buffer] + 
+					bytes_per_pixel * (sprite->x + (row + sprite->y) * vmi.XResolution), 
+					sprite->map + bytes_per_pixel * row * sprite->img.width,
+					bytes_per_pixel * sprite->img.width);
 		}
 	}
 	return OK;

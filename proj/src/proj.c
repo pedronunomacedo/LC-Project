@@ -60,8 +60,6 @@ int (proj_main_loop)(int argc, char *argv[]) {
 							default:
 								break;
 						}
-						if (draw_main_menu() != OK) { return !OK; }
-						vg_swap_buffers();
 					}
 
 					if (msg.m_notify.interrupts & keyboard_irq_set) {
