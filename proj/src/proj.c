@@ -8,6 +8,7 @@
 
 #include "events/events.h"
 #include "menu/main_menu.h"
+#include "menu/rules_menu.h"
 #include "lib/sprite/sprite.h"
 
 #define FPS 50
@@ -40,6 +41,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	GAME_STATE game_state = MAIN_MENU;
 	
 	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -55,7 +57,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 						timer_int_handler();
 						switch (game_state)	{
 							case MAIN_MENU:
-								game_state = handle_timer_main_menu();
+								game_state=handle_timer_main_menu();
+								break;
+							case RULES_MENU:
+								game_state=handle_timer_rules_menu();
 								break;
 							default:
 								break;
@@ -67,7 +72,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 						if (check_keyboard_ready()) {
 							switch (game_state) {
 								case MAIN_MENU:
-									game_state = handle_keyboard_main_menu(get_keyboard_scancode());
+									game_state=handle_keyboard_main_menu(get_keyboard_scancode());
+									break;
+								case RULES_MENU:
+									game_state=handle_keyboard_rules_menu(get_keyboard_scancode());
 									break;
 								default:
 									break;
@@ -80,7 +88,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 						if (check_mouse_ready()) {
 							switch (game_state) {
 								case MAIN_MENU:
-									game_state = handle_mouse_main_menu(get_mouse_packet());
+									game_state=handle_mouse_main_menu(get_mouse_packet());
+									break;
+								case RULES_MENU:
+									game_state=handle_mouse_rules_menu(get_mouse_packet());
 									break;
 								default:
 									break;
@@ -94,6 +105,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 		}
 	}
 
+	destroy_rules_menu();
 	destroy_main_menu();
 
 	if (mouse_unsubscribe_int() != OK) { return !OK; }

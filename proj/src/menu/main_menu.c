@@ -19,14 +19,14 @@ static sprite * quit_button;
 static sprite * quit_button_hover;
 
 int (initialize_main_menu)(uint32_t x, uint32_t y) {
-    mouse_sprite = sprite_new(mouse_xpm, x - 30, y + 30);
+    mouse_sprite = sprite_new(mouse_xpm, x - MOUSE_SIDE, y + MOUSE_SIDE);
     background_sprite = sprite_new(background_xpm, 0, 0);
-    play_button = sprite_new(play_button_xpm, 376, 400);    
-    play_button_hover = sprite_new(play_button_hover_xpm, 376, 400);
-    rules_button = sprite_new(rules_button_xpm, 376, 550);    
-    rules_button_hover = sprite_new(rules_button_hover_xpm, 376, 550);
-    quit_button = sprite_new(quit_button_xpm, 376, 700);    
-    quit_button_hover = sprite_new(quit_button_hover_xpm, 376, 700);
+    play_button = sprite_new(play_button_xpm, BUTTONS_X, PLAY_BTN_Y);    
+    play_button_hover = sprite_new(play_button_hover_xpm, BUTTONS_X, PLAY_BTN_Y);
+    rules_button = sprite_new(rules_button_xpm, BUTTONS_X, RULES_BTN_Y);    
+    rules_button_hover = sprite_new(rules_button_hover_xpm, BUTTONS_X, RULES_BTN_Y);
+    quit_button = sprite_new(quit_button_xpm, BUTTONS_X, QUIT_BTN_Y);    
+    quit_button_hover = sprite_new(quit_button_hover_xpm, BUTTONS_X, QUIT_BTN_Y);
     if (mouse_sprite == NULL || 
         background_sprite == NULL ||
         play_button == NULL || 
@@ -54,32 +54,25 @@ void (destroy_main_menu)(void) {
 int (draw_main_menu)(void) {
     if (vg_draw_sprite_no_checks(background_sprite) != OK) { return !OK; }
 
-    if (check_mouse_in_button(play_button)) {
+    if (check_mouse_in_button(mouse_sprite, play_button)) {
         if (vg_draw_sprite_no_checks(play_button_hover) != OK) { return !OK; }
     } else {
         if (vg_draw_sprite_no_checks(play_button) != OK) { return !OK; }
     }
 
-    if (check_mouse_in_button(rules_button)) {
+    if (check_mouse_in_button(mouse_sprite, rules_button)) {
         if (vg_draw_sprite_no_checks(rules_button_hover) != OK) { return !OK; }
     } else {
         if (vg_draw_sprite_no_checks(rules_button) != OK) { return !OK; }
     }
 
-    if (check_mouse_in_button(quit_button)) {
+    if (check_mouse_in_button(mouse_sprite, quit_button)) {
         if (vg_draw_sprite_no_checks(quit_button_hover) != OK) { return !OK; }
     } else {
         if (vg_draw_sprite_no_checks(quit_button) != OK) { return !OK; }
     }
     if (vg_draw_sprite(mouse_sprite) != OK) { return !OK; }
     return OK;
-}
-
-bool (check_mouse_in_button)(struct sprite * button) {
-    return  mouse_sprite->x > button->x && 
-            mouse_sprite->x < button->x + button->img.width &&
-            mouse_sprite->y > button->y &&
-            mouse_sprite->y < button->y + button->img.height;
 }
 
 sprite * get_mouse_sprite_main_menu() { return mouse_sprite; }
