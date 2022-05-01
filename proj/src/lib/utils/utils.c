@@ -18,3 +18,10 @@ int (util_sys_inb)(int port, uint8_t *value) {
 	*value = (uint8_t)input;
 	return ret;
 }
+
+bool (check_mouse_in_button)(struct sprite * mouse, struct sprite * button) {
+    return  mouse->x > button->x && 
+            mouse->x < button->x + button->img.width &&
+            mouse->y > button->y &&
+            mouse->y < button->y + button->img.height;
+}

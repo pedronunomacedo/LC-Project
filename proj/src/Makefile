@@ -9,7 +9,7 @@ PROG=proj
 .PATH: ${.CURDIR}/events
 
 # source code files to be compiled
-SRCS = proj.c events.c timer.c kbc.c graphics.c sprite.c main_menu.c utils.c
+SRCS = proj.c events.c timer.c kbc.c graphics.c sprite.c main_menu.c rules_menu.c utils.c
 
 # additional compilation flags
 CPPFLAGS += -pedantic -D __LCOM_OPTIMIZED__
