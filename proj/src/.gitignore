@@ -2,3 +2,4 @@ proj
 *.o
 .gdbinit
 *.png
+*.xcf
