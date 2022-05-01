@@ -119,7 +119,7 @@ int (vg_draw_sprite)(struct sprite * sprite) {
 	return OK;
 }
 
-int (vg_draw_sprite_no_checks)(struct sprite * sprite) {
+int (vg_draw_block_sprite_without_checks)(struct sprite * sprite) {
 	if (sprite->img.height == vmi.YResolution && sprite->img.width == vmi.XResolution) {
 		memcpy(video_mem[current_buffer], sprite->map, vram_size);
 	} else {
@@ -131,14 +131,4 @@ int (vg_draw_sprite_no_checks)(struct sprite * sprite) {
 		}
 	}
 	return OK;
-}
-
-uint32_t (set_bits)(uint8_t start, uint8_t end) {
-	uint32_t bits = 0x0;
-	for (int i = start; i < end; i++) { bits |= BIT(i); }
-	return bits;
-}
-
-char* (vg_get_current_buffer)() {
-	return video_mem[current_buffer];
 }
