@@ -10,7 +10,7 @@
 #include "menu/main_menu.h"
 #include "lib/sprite/sprite.h"
 
-#define FPS 60
+#define FPS 50
 
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
@@ -39,7 +39,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	message msg;
 	GAME_STATE game_state = MAIN_MENU;
 	
-	if (initialize_main_menu(400,400) != OK) { return !OK; }
+	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -94,7 +94,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 		}
 	}
 
-	sprite_destroy(get_mouse_sprite_main_menu());
+	destroy_main_menu();
 
 	if (mouse_unsubscribe_int() != OK) { return !OK; }
 	if (kbd_unsubscribe_int() != OK) { return !OK; }
