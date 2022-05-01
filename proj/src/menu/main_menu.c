@@ -75,11 +75,17 @@ int (draw_main_menu)(void) {
     return OK;
 }
 
-sprite * get_mouse_sprite_main_menu() { return mouse_sprite; }
-
 bool (check_mouse_in_button)(struct sprite * button) {
     return  mouse_sprite->x > button->x && 
             mouse_sprite->x < button->x + button->img.width &&
             mouse_sprite->y > button->y &&
             mouse_sprite->y < button->y + button->img.height;
 }
+
+sprite * get_mouse_sprite_main_menu() { return mouse_sprite; }
+
+sprite * get_play_sprite_main_menu() { return play_button; }
+
+sprite * get_rules_sprite_main_menu() { return rules_button; }
+
+sprite * get_quit_sprite_main_menu() { return quit_button; }
