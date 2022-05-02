@@ -8,7 +8,7 @@ GAME_STATE (handle_timer_main_menu)() {
 }
 
 GAME_STATE (handle_keyboard_main_menu)(uint16_t scancode) {
-    if (scancode == 0x81) {
+    if (scancode == KBC_ESQ_BC) {
         return QUIT;
     }
     return MAIN_MENU;
@@ -39,7 +39,7 @@ GAME_STATE (handle_timer_rules_menu)() {
 }
 
 GAME_STATE (handle_keyboard_rules_menu)(uint16_t scancode) {
-    if (scancode == 0x81) {
+    if (scancode == KBC_ESQ_BC) {
         return MAIN_MENU;
     }
     return RULES_MENU;
@@ -65,16 +65,12 @@ GAME_STATE (handle_timer_game)() {
 }
 
 GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
-    if (scancode == 0x81) {
+    if (scancode == KBC_ESQ_BC) {
         return MAIN_MENU;
-    } else if (scancode == 0x4be0) {
+    } else if (scancode == KBC_LEFT_ARROW_MC) {
         game_set_column_left();
-    } else if (scancode == 0x4de0) {
+    } else if (scancode == KBC_RIGHT_ARROW_MC) {
         game_set_column_right();
     }
-    return IN_GAME;
-}
-
-GAME_STATE (handle_mouse_game)(struct packet pp) {
     return IN_GAME;
 }

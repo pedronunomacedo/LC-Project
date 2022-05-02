@@ -5,6 +5,7 @@
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
 #include "lib/sprite/sprite.h"
+#include "lib/devices/i8042.h"
 
 typedef enum {
     IN_GAME,

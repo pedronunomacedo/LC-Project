@@ -5,6 +5,10 @@
 #define DELAY 20000
 
 #define KBC_ESQ_BC 0x81 //ESQ breakcode
+#define KBC_LEFT_ARROW_MC 0x4be0
+#define KBC_RIGHT_ARROW_MC 0x4de0
+
+
 #define KBC_TWOBYTE_CODE 0xE0 //first byte of a two-byte scancode
 #define KBC_MSB BIT(7) //MSB of a byte
 
