@@ -52,24 +52,24 @@ void (destroy_main_menu)(void) {
 }
 
 int (draw_main_menu)(void) {
-    if (vg_draw_sprite_no_checks(background_sprite) != OK) { return !OK; }
+    if (vg_draw_block_sprite_without_checks(background_sprite) != OK) { return !OK; }
 
     if (check_mouse_in_button(mouse_sprite, play_button)) {
-        if (vg_draw_sprite_no_checks(play_button_hover) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(play_button_hover) != OK) { return !OK; }
     } else {
-        if (vg_draw_sprite_no_checks(play_button) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(play_button) != OK) { return !OK; }
     }
 
     if (check_mouse_in_button(mouse_sprite, rules_button)) {
-        if (vg_draw_sprite_no_checks(rules_button_hover) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(rules_button_hover) != OK) { return !OK; }
     } else {
-        if (vg_draw_sprite_no_checks(rules_button) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(rules_button) != OK) { return !OK; }
     }
 
     if (check_mouse_in_button(mouse_sprite, quit_button)) {
-        if (vg_draw_sprite_no_checks(quit_button_hover) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(quit_button_hover) != OK) { return !OK; }
     } else {
-        if (vg_draw_sprite_no_checks(quit_button) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(quit_button) != OK) { return !OK; }
     }
     if (vg_draw_sprite(mouse_sprite) != OK) { return !OK; }
     return OK;

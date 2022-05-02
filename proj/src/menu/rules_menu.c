@@ -32,12 +32,12 @@ void (destroy_rules_menu)(void) {
 }
 
 int (draw_rules_menu)(void) {
-    if (vg_draw_sprite_no_checks(background_sprite) != OK) { return !OK; }
+    if (vg_draw_block_sprite_without_checks(background_sprite) != OK) { return !OK; }
 
     if (check_mouse_in_button(mouse_sprite, back_button)) {
-        if (vg_draw_sprite_no_checks(back_button_hover) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(back_button_hover) != OK) { return !OK; }
     } else {
-        if (vg_draw_sprite_no_checks(back_button) != OK) { return !OK; }
+        if (vg_draw_block_sprite_without_checks(back_button) != OK) { return !OK; }
     }
 
     if (vg_draw_sprite(mouse_sprite) != OK) { return !OK; }
