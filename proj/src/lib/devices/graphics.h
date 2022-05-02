@@ -22,3 +22,7 @@ int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color);
 int (vg_draw_sprite)(struct sprite * sprite);
 
 int (vg_draw_block_sprite_without_checks)(struct sprite * sp);
+
+void (vg_set_current_buffer)(char * buffer);
+
+unsigned int (vg_get_vram_size)();

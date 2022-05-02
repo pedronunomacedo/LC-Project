@@ -23,6 +23,9 @@ GAME_STATE (handle_mouse_main_menu)(struct packet pp) {
         } else if (check_mouse_in_button(mouse, get_rules_sprite_main_menu())) {
             sprite_set_pos(get_mouse_sprite_rules_menu(), mouse->x, mouse->y);
             return RULES_MENU;
+        } else if (check_mouse_in_button(mouse, get_play_sprite_main_menu())) {
+            start_game();
+            return IN_GAME;
         }
     }
     return MAIN_MENU;
@@ -52,4 +55,26 @@ GAME_STATE (handle_mouse_rules_menu)(struct packet pp) {
         }
     }
     return RULES_MENU;
+}
+
+GAME_STATE (handle_timer_game)() {
+    if (draw_game() == OK) {
+        vg_swap_buffers();
+    }
+    return IN_GAME;
+}
+
+GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
+    if (scancode == 0x81) {
+        return MAIN_MENU;
+    } else if (scancode == 0x4be0) {
+        game_set_column_left();
+    } else if (scancode == 0x4de0) {
+        game_set_column_right();
+    }
+    return IN_GAME;
+}
+
+GAME_STATE (handle_mouse_game)(struct packet pp) {
+    return IN_GAME;
 }
