@@ -132,3 +132,11 @@ int (vg_draw_block_sprite_without_checks)(struct sprite * sprite) {
 	}
 	return OK;
 }
+
+unsigned int (vg_get_vram_size)() {
+	return vram_size;
+}
+
+void (vg_set_current_buffer)(char * buffer) {
+	memcpy(video_mem[current_buffer], buffer, vram_size);
+}

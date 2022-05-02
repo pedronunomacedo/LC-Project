@@ -9,6 +9,7 @@
 #include "events/events.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
+#include "game/game.h"
 #include "lib/sprite/sprite.h"
 
 #define FPS 50
@@ -42,6 +43,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	
 	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_game() != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -62,6 +64,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 							case RULES_MENU:
 								game_state=handle_timer_rules_menu();
 								break;
+							case IN_GAME:
+								game_state=handle_timer_game();
+								break;
 							default:
 								break;
 						}
@@ -76,6 +81,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 									break;
 								case RULES_MENU:
 									game_state=handle_keyboard_rules_menu(get_keyboard_scancode());
+									break;
+								case IN_GAME:
+									game_state=handle_keyboard_game(get_keyboard_scancode());
 									break;
 								default:
 									break;
@@ -105,6 +113,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 		}
 	}
 
+	destroy_game();
 	destroy_rules_menu();
 	destroy_main_menu();
 
