@@ -4,6 +4,7 @@
 #include "game/game.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
+#include "menu/pause_menu.h"
 #include "lib/sprite/sprite.h"
 #include "lib/devices/i8042.h"
 
@@ -27,6 +28,12 @@ GAME_STATE (handle_timer_rules_menu)();
 GAME_STATE (handle_keyboard_rules_menu)(uint16_t scancode);
 
 GAME_STATE (handle_mouse_rules_menu)(struct packet pp);
+
+GAME_STATE (handle_timer_pause_menu)();
+
+GAME_STATE (handle_keyboard_pause_menu)(uint16_t scancode);
+
+GAME_STATE (handle_mouse_pause_menu)(struct packet pp);
 
 GAME_STATE (handle_timer_game)();
 

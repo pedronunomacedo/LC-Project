@@ -9,6 +9,7 @@
 #include "events/events.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
+#include "menu/pause_menu.h"
 #include "game/game.h"
 #include "lib/sprite/sprite.h"
 
@@ -43,6 +44,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	
 	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_pause_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 	if (initialize_game() != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
@@ -67,6 +69,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 							case IN_GAME:
 								game_state=handle_timer_game();
 								break;
+							case PAUSE_MENU:
+								game_state=handle_timer_pause_menu();
+								break;
 							default:
 								break;
 						}
@@ -85,6 +90,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 								case IN_GAME:
 									game_state=handle_keyboard_game(get_keyboard_scancode());
 									break;
+								case PAUSE_MENU:
+									game_state=handle_keyboard_pause_menu(get_keyboard_scancode());
+									break;
 								default:
 									break;
 							}
@@ -101,6 +109,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 								case RULES_MENU:
 									game_state=handle_mouse_rules_menu(get_mouse_packet());
 									break;
+								case PAUSE_MENU:
+									game_state=handle_mouse_pause_menu(get_mouse_packet());
+									break;
 								default:
 									break;
 							}
@@ -114,6 +125,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	}
 
 	destroy_game();
+	destroy_pause_menu();
 	destroy_rules_menu();
 	destroy_main_menu();
 
