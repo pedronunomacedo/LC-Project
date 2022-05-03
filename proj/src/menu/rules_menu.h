@@ -4,6 +4,7 @@
 #include "lib/devices/graphics.h"
 #include "lib/sprite/sprite.h"
 #include "lib/utils/utils.h"
+#include "font.h"
 
 #define MOUSE_SIDE 30
 #define BACK_BTN_X 652

@@ -5,11 +5,13 @@
 #include "lib/devices/kbc.h"
 #include "lib/devices/graphics.h"
 #include "lib/devices/vbe.h"
+#include "lib/devices/rtc.h"
 
 #include "events/events.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
 #include "menu/pause_menu.h"
+#include "menu/font.h"
 #include "game/game_end_menu.h"
 #include "game/game.h"
 #include "lib/sprite/sprite.h"
@@ -37,13 +39,17 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
 	if (set_mouse_data_reporting(true) != OK) { return !OK; }
 
-	uint8_t timer_bit_no, keyboard_bit_no, mouse_bit_no;
+	uint8_t timer_bit_no, keyboard_bit_no, mouse_bit_no, rtc_bit_no;
 	if (timer_subscribe_int(&timer_bit_no) != OK) { return !OK; }
 	if (kbd_subscribe_int(&keyboard_bit_no) != OK) { return !OK; }
 	if (mouse_subscribe_int(&mouse_bit_no) != OK) { return !OK; }
+	if (rtc_subscribe_int(&rtc_bit_no) != OK) { return !OK; }
 	uint32_t 	timer_irq_set = BIT(timer_bit_no), 
 				keyboard_irq_set = BIT(keyboard_bit_no),
-				mouse_irq_set = BIT(mouse_bit_no);
+				mouse_irq_set = BIT(mouse_bit_no),
+				rtc_irq_set = BIT(rtc_bit_no);
+	rtc_disable_all_interrupts();
+  	rtc_enable_update_interrupts();
 
 	int r, ipc_status;
 	message msg;
@@ -52,6 +58,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
 	if (initialize_pause_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_font() != OK) { return !OK; }
 	if (initialize_game_end_menu() != OK) { return !OK; }
 	if (initialize_game() != OK) { return !OK; }
 
@@ -132,6 +139,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 							}
 						}
 					}
+
+					if (msg.m_notify.interrupts & rtc_irq_set) {
+						rtc_ih();
+					}
 					break;
 				default:
 					break; 
@@ -141,11 +152,13 @@ int (proj_main_loop)(int argc, char *argv[]) {
 
 	destroy_game();
 	destroy_game_end_menu();
+	destroy_font();
 	destroy_pause_menu();
 	destroy_rules_menu();
 	destroy_main_menu();
 	sprite_destroy(init);
 
+	if (rtc_unsubscribe_int() != OK) { return !OK; }
 	if (mouse_unsubscribe_int() != OK) { return !OK; }
 	if (kbd_unsubscribe_int() != OK) { return !OK; }
 	if (timer_unsubscribe_int() != OK) { return !OK; }
