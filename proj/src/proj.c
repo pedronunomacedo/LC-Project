@@ -18,8 +18,6 @@
 
 #define FPS 50
 
-static sprite * init;
-
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
 	lcf_trace_calls("/home/lcom/labs/proj/trace.txt");
@@ -34,7 +32,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
 	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
 
-	init = sprite_new(initializing_xpm,0,0);
+	sprite * init = sprite_new(initializing_xpm,0,0);
 	if (vg_draw_block_sprite_without_checks(init) != OK) { return !OK; }
 
 	if (set_mouse_data_reporting(true) != OK) { return !OK; }
@@ -146,6 +144,7 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	destroy_pause_menu();
 	destroy_rules_menu();
 	destroy_main_menu();
+	sprite_destroy(init);
 
 	if (mouse_unsubscribe_int() != OK) { return !OK; }
 	if (kbd_unsubscribe_int() != OK) { return !OK; }
