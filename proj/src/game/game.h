@@ -11,6 +11,7 @@
 #define EMPTY 0
 #define PLAYER1 1
 #define PLAYER2 2
+#define DRAW 3
 
 typedef struct game
 {

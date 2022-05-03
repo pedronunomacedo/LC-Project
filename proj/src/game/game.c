@@ -149,47 +149,58 @@ int (check_game_end)() {
     for (int i = 0; i < ROW_NUM; i+=ROW_NUM-1) {
         for (int j = 0; j < COLUMN_NUM; j++) {
             counter = 0;
-            //right-down
-            for (int ii = i, jj = j; 
-                    ii < ROW_NUM || jj < COLUMN_NUM;
-                    ii++,jj++) {
-                if (state->board[ii][jj] == state->turn) {
-                    counter++;
-                    if (counter == 4) { return state->turn; }
-                } else { counter = 0; }
-            }
-            counter = 0;
-            //right-up
-            for (int ii = i, jj = j; 
-                    ii >= 0 || jj < COLUMN_NUM;
-                    ii--,jj++) {
-                if (state->board[ii][jj] == state->turn) {
-                    counter++;
-                    if (counter == 4) { return state->turn; }
-                } else { counter = 0; }
-            }
-            counter = 0;
-            //left-down
-            for (int ii = i, jj = j; 
-                    ii < ROW_NUM || jj >= 0;
-                    ii++,jj--) {
-                if (state->board[ii][jj] == state->turn) {
-                    counter++;
-                    if (counter == 4) { return state->turn; }
-                } else { counter = 0; }
-            }
-            counter = 0;
-            //left-up
-            for (int ii = i, jj = j; 
-                    ii >= 0 || jj >= 0;
-                    ii--,jj--) {
-                if (state->board[ii][jj] == state->turn) {
-                    counter++;
-                    if (counter == 4) { return state->turn; }
-                } else { counter = 0; }
+            if (i == 0) {
+                //right-down
+                for (int ii = i, jj = j; 
+                        ii < ROW_NUM || jj < COLUMN_NUM;
+                        ii++,jj++) {
+                    if (state->board[ii][jj] == state->turn) {
+                        counter++;
+                        if (counter == 4) { return state->turn; }
+                    } else { counter = 0; }
+                }
+                counter = 0;
+                //left-down
+                for (int ii = i, jj = j; 
+                        ii < ROW_NUM || jj >= 0;
+                        ii++,jj--) {
+                    if (state->board[ii][jj] == state->turn) {
+                        counter++;
+                        if (counter == 4) { return state->turn; }
+                    } else { counter = 0; }
+                }
+            } else {
+                //right-up
+                for (int ii = i, jj = j; 
+                        ii >= 0 || jj < COLUMN_NUM;
+                        ii--,jj++) {
+                    if (state->board[ii][jj] == state->turn) {
+                        counter++;
+                        if (counter == 4) { return state->turn; }
+                    } else { counter = 0; }
+                }
+                counter = 0;
+                //left-up
+                for (int ii = i, jj = j; 
+                        ii >= 0 || jj >= 0;
+                        ii--,jj--) {
+                    if (state->board[ii][jj] == state->turn) {
+                        counter++;
+                        if (counter == 4) { return state->turn; }
+                    } else { counter = 0; }
+                }
             }
         }
     }
+
+    bool check_next_move_possible = false;
+    for (int j = 0; j < COLUMN_NUM; j++) {
+        if (state->board[0][j] == 0) {
+            check_next_move_possible = true;
+            break;
+        }
+    }
+    if (!check_next_move_possible) { return DRAW; }
 
     return 0;
 }
