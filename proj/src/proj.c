@@ -18,7 +18,7 @@
 
 #include "assets/game/initializing.xpm"
 
-#define FPS 50
+#define FPS 60
 
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
@@ -90,6 +90,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 							case END_GAME:
 								game_state=handle_timer_game_end_menu();
 								break;
+							case ANIMATION_GAME:
+								game_state=handle_timer_animation_game();
+								break;
 							default:
 								break;
 						}
@@ -113,6 +116,10 @@ int (proj_main_loop)(int argc, char *argv[]) {
 									break;
 								case END_GAME:
 									game_state=handle_keyboard_game_end_menu(
+										get_keyboard_scancode());
+									break;
+								case ANIMATION_GAME:
+									game_state=handle_keyboard_animation_game(
 										get_keyboard_scancode());
 									break;
 								default:
