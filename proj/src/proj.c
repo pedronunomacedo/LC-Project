@@ -14,7 +14,11 @@
 #include "game/game.h"
 #include "lib/sprite/sprite.h"
 
+#include "assets/game/initializing.xpm"
+
 #define FPS 50
+
+static sprite * init;
 
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
@@ -27,9 +31,13 @@ int main(int argc, char *argv[]) {
 }
 
 int (proj_main_loop)(int argc, char *argv[]) {
-	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
-	if (set_mouse_data_reporting(true) != OK) { return !OK; }
 	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
+	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
+
+	init = sprite_new(initializing_xpm,0,0);
+	if (vg_draw_block_sprite_without_checks(init) != OK) { return !OK; }
+
+	if (set_mouse_data_reporting(true) != OK) { return !OK; }
 
 	uint8_t timer_bit_no, keyboard_bit_no, mouse_bit_no;
 	if (timer_subscribe_int(&timer_bit_no) != OK) { return !OK; }
