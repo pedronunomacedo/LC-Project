@@ -87,6 +87,20 @@ GAME_STATE (handle_mouse_pause_menu)(struct packet pp) {
     return PAUSE_MENU;
 }
 
+GAME_STATE (handle_timer_game_end_menu)() {
+    if (draw_game_end_menu() == OK) {
+        vg_swap_buffers();
+    }
+    return END_GAME;
+}
+
+GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode) {
+    if (scancode == KBC_ESQ_BC) {
+        return MAIN_MENU;
+    }
+    return END_GAME;
+}
+
 GAME_STATE (handle_timer_game)() {
     if (draw_game() == OK) {
         vg_swap_buffers();
@@ -102,9 +116,10 @@ GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
     } else if (scancode == KBC_RIGHT_ARROW_MC) {
         game_set_column_right();
     } else if (scancode == KBC_SPACE_BC) {
-        int winner = game_move();
-        if (winner != 0) {
-            return MAIN_MENU;
+        int result = game_move();
+        if (result != 0) {
+            set_result_game_end_menu(result);
+            return END_GAME;
         }
     }
     return IN_GAME;
