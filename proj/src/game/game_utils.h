@@ -8,7 +8,13 @@
 #define POS_4_X 636
 #define POS_5_X 746
 #define POS_6_X 856
-#define POS_0_Y 104
+#define POS_INIT_Y 104
+#define POS_0_Y 209
+#define POS_1_Y 319
+#define POS_2_Y 429
+#define POS_3_Y 539
+#define POS_4_Y 649
+#define POS_5_Y 759
 
 uint32_t (game_get_X_pos)(int column);
 

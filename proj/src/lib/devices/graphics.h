@@ -19,7 +19,11 @@ int (vg_draw_hline)(uint16_t x, uint16_t y, uint16_t len, uint32_t color);
 
 int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color);
 
+int (vg_draw_pixel_in_buffer)(char * buffer, uint16_t x, uint16_t y, uint32_t color);
+
 int (vg_draw_sprite)(struct sprite * sprite);
+
+int (vg_draw_sprite_in_buffer)(char * buffer, struct sprite * sprite);
 
 int (vg_draw_block_sprite_without_checks)(struct sprite * sp);
 
