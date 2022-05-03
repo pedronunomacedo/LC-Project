@@ -29,12 +29,12 @@ int main(int argc, char *argv[]) {
 }
 
 int (proj_main_loop)(int argc, char *argv[]) {
-	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
 	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
 
 	sprite * init = sprite_new(initializing_xpm,0,0);
 	if (vg_draw_block_sprite_without_checks(init) != OK) { return !OK; }
 
+	if (timer_set_frequency(TIMER_SEL0, FPS) != OK) { return !OK; }
 	if (set_mouse_data_reporting(true) != OK) { return !OK; }
 
 	uint8_t timer_bit_no, keyboard_bit_no, mouse_bit_no;
