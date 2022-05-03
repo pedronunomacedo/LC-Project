@@ -2,6 +2,7 @@
 #include <lcom/lcf.h>
 
 #include "game/game.h"
+#include "game/game_end_menu.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
 #include "menu/pause_menu.h"
@@ -34,6 +35,10 @@ GAME_STATE (handle_timer_pause_menu)();
 GAME_STATE (handle_keyboard_pause_menu)(uint16_t scancode);
 
 GAME_STATE (handle_mouse_pause_menu)(struct packet pp);
+
+GAME_STATE (handle_timer_game_end_menu)();
+
+GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode);
 
 GAME_STATE (handle_timer_game)();
 
