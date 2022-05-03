@@ -19,6 +19,7 @@
     "main_menu.h": "c",
     "events.h": "c",
     "font.h": "c",
-    "rtc.h": "c"
+    "rtc.h": "c",
+    "lab2.h": "c"
   },
 }
