@@ -47,18 +47,19 @@ void (destroy_game)(void) {
 
 void (start_game)(void) {
     memcpy(state->display_buffer, board->map, vg_get_vram_size());
-    state->turn = 1;
-    state->column = 3;
-    for (int i = 0; i < 6; i++) for (int j = 0; j < 7; j++) { state->board[i][j] = 0; }
+    state->turn = PLAYER1;
+    state->column = COLUMN_CENTER;
+    for (int i = 0; i < ROW_NUM; i++) 
+        for (int j = 0; j < COLUMN_NUM; j++) { state->board[i][j] = 0; }
     update_sprite_column();
 }
 
 int (draw_game)(void) {
     vg_set_current_buffer(state->display_buffer);
-    if (state->turn == 1) {
+    if (state->turn == PLAYER1) {
         if (vg_draw_block_sprite_without_checks(turn_player1) != OK) { return !OK; }
         if (vg_draw_sprite(blue_piece) != OK) { return !OK; }
-    } else {
+    } else if (state->turn == PLAYER2) {
         if (vg_draw_block_sprite_without_checks(turn_player2) != OK) { return !OK; }
         if (vg_draw_sprite(red_piece) != OK) { return !OK; }
     }
@@ -78,44 +79,117 @@ void (game_set_column_left)(void) {
 }
 
 void (update_sprite_column)(void) {
-    if (state->turn == 1) {
+    if (state->turn == PLAYER1) {
         sprite_set_pos(blue_piece,game_get_X_pos(state->column),game_get_Y_pos(-1));
-    } else {
+    } else if (state->turn == PLAYER2) {
         sprite_set_pos(red_piece,game_get_X_pos(state->column),game_get_Y_pos(-1));
     }
 }
 
-void (game_move)(void) {
-    if (state->board[0][state->column] != EMPTY) { return; }
-    int col = 0;
-    for (int i = 0; i < 6; i++) {
+int (game_move)() {
+    if (state->board[0][state->column] != EMPTY) { return 0; }
+    int winner, col = 0;
+    for (int i = 0; i < ROW_NUM; i++) {
         if (state->board[i][state->column] != 0) {
             state->board[i - 1][state->column] = state->turn;
             col = i - 1;
             break;
-        } else if (i == 5) {
-            col = 5;
-            state->board[5][state->column] = state->turn;
+        } else if (i == ROW_NUM - 1) {
+            col = ROW_NUM - 1;
+            state->board[ROW_NUM - 1][state->column] = state->turn;
         }
     }
 
-    if (state->turn == 1) {
+    if (state->turn == PLAYER1) {
         sprite_set_pos(blue_piece,
                         game_get_X_pos(state->column),
                         game_get_Y_pos(col));
         vg_draw_sprite_in_buffer(state->display_buffer, blue_piece);
-    } else {
+    } else if (state->turn == PLAYER2) {
         sprite_set_pos(red_piece,
                         game_get_X_pos(state->column),
                         game_get_Y_pos(col));
         vg_draw_sprite_in_buffer(state->display_buffer, red_piece);
     }
 
+    if ((winner = check_game_end()) != 0) { return winner; }
+
     next_turn();
+    return 0;
 }
 
 void (next_turn)(void) {
-    state->turn = (state->turn == 1) ? 2 : 1;
-    state->column = 3;
+    state->turn = (state->turn == PLAYER1) ? PLAYER2 : PLAYER1;
+    state->column = COLUMN_CENTER;
     update_sprite_column();
+}
+
+int (check_game_end)() {
+    int counter = 0;
+    for (int i = 0; i < ROW_NUM; i++) {
+        counter = 0;
+        for (int j = 0; j < COLUMN_NUM; j++) {
+            if (state->board[i][j] == state->turn) {
+                counter++;
+                if (counter == 4) { return state->turn; }
+            } else { counter = 0; }
+        }
+    }
+
+    for (int j = 0; j < COLUMN_NUM; j++) {
+        counter = 0;
+        for (int i = 0; i < ROW_NUM; i++) {
+            if (state->board[i][j] == state->turn) {
+                counter++;
+                if (counter == 4) { return state->turn; }
+            } else { counter = 0; }
+        }
+    }
+    //only first and last row (it is enough)
+    for (int i = 0; i < ROW_NUM; i+=ROW_NUM-1) {
+        for (int j = 0; j < COLUMN_NUM; j++) {
+            counter = 0;
+            //right-down
+            for (int ii = i, jj = j; 
+                    ii < ROW_NUM || jj < COLUMN_NUM;
+                    ii++,jj++) {
+                if (state->board[ii][jj] == state->turn) {
+                    counter++;
+                    if (counter == 4) { return state->turn; }
+                } else { counter = 0; }
+            }
+            counter = 0;
+            //right-up
+            for (int ii = i, jj = j; 
+                    ii >= 0 || jj < COLUMN_NUM;
+                    ii--,jj++) {
+                if (state->board[ii][jj] == state->turn) {
+                    counter++;
+                    if (counter == 4) { return state->turn; }
+                } else { counter = 0; }
+            }
+            counter = 0;
+            //left-down
+            for (int ii = i, jj = j; 
+                    ii < ROW_NUM || jj >= 0;
+                    ii++,jj--) {
+                if (state->board[ii][jj] == state->turn) {
+                    counter++;
+                    if (counter == 4) { return state->turn; }
+                } else { counter = 0; }
+            }
+            counter = 0;
+            //left-up
+            for (int ii = i, jj = j; 
+                    ii >= 0 || jj >= 0;
+                    ii--,jj--) {
+                if (state->board[ii][jj] == state->turn) {
+                    counter++;
+                    if (counter == 4) { return state->turn; }
+                } else { counter = 0; }
+            }
+        }
+    }
+
+    return 0;
 }
