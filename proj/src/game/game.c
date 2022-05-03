@@ -48,31 +48,74 @@ void (destroy_game)(void) {
 void (start_game)(void) {
     memcpy(state->display_buffer, board->map, vg_get_vram_size());
     state->turn = 1;
-    state->column = 0;
+    state->column = 3;
     for (int i = 0; i < 6; i++) for (int j = 0; j < 7; j++) { state->board[i][j] = 0; }
-    sprite_set_pos(blue_piece,game_get_X_pos(0),game_get_Y_pos(0));
-    sprite_set_pos(red_piece,game_get_X_pos(0),game_get_Y_pos(0));
+    update_sprite_column();
 }
 
 int (draw_game)(void) {
     vg_set_current_buffer(state->display_buffer);
     if (state->turn == 1) {
         if (vg_draw_block_sprite_without_checks(turn_player1) != OK) { return !OK; }
+        if (vg_draw_sprite(blue_piece) != OK) { return !OK; }
     } else {
         if (vg_draw_block_sprite_without_checks(turn_player2) != OK) { return !OK; }
+        if (vg_draw_sprite(red_piece) != OK) { return !OK; }
     }
-    sprite_set_pos(blue_piece,game_get_X_pos(state->column),game_get_Y_pos(0));
-    vg_draw_sprite(blue_piece);
     return OK;
 }
 
 void (game_set_column_right)(void) {
     if (state->column + 1 == COLUMN_NUM) return;
     state->column += 1;
+    update_sprite_column();
 }
 
 void (game_set_column_left)(void) {
     if (state->column == 0) return;
     state->column -= 1;
+    update_sprite_column();
 }
 
+void (update_sprite_column)(void) {
+    if (state->turn == 1) {
+        sprite_set_pos(blue_piece,game_get_X_pos(state->column),game_get_Y_pos(-1));
+    } else {
+        sprite_set_pos(red_piece,game_get_X_pos(state->column),game_get_Y_pos(-1));
+    }
+}
+
+void (game_move)(void) {
+    if (state->board[0][state->column] != EMPTY) { return; }
+    int col = 0;
+    for (int i = 0; i < 6; i++) {
+        if (state->board[i][state->column] != 0) {
+            state->board[i - 1][state->column] = state->turn;
+            col = i - 1;
+            break;
+        } else if (i == 5) {
+            col = 5;
+            state->board[5][state->column] = state->turn;
+        }
+    }
+
+    if (state->turn == 1) {
+        sprite_set_pos(blue_piece,
+                        game_get_X_pos(state->column),
+                        game_get_Y_pos(col));
+        vg_draw_sprite_in_buffer(state->display_buffer, blue_piece);
+    } else {
+        sprite_set_pos(red_piece,
+                        game_get_X_pos(state->column),
+                        game_get_Y_pos(col));
+        vg_draw_sprite_in_buffer(state->display_buffer, red_piece);
+    }
+
+    next_turn();
+}
+
+void (next_turn)(void) {
+    state->turn = (state->turn == 1) ? 2 : 1;
+    state->column = 3;
+    update_sprite_column();
+}

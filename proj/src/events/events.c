@@ -101,6 +101,8 @@ GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
         game_set_column_left();
     } else if (scancode == KBC_RIGHT_ARROW_MC) {
         game_set_column_right();
+    } else if (scancode == KBC_SPACE_BC) {
+        game_move();
     }
     return IN_GAME;
 }

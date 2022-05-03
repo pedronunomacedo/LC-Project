@@ -90,6 +90,15 @@ int (vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color) {
 	return OK;
 }
 
+int (vg_draw_pixel_in_buffer)(char * buffer, uint16_t x, uint16_t y, uint32_t color) {
+	if (color == TRANSPARENCY_COLOR_8_8_8_8) { return OK; }
+
+	memcpy(buffer + bytes_per_pixel * (x + y * vmi.XResolution),
+				 &color, bytes_per_pixel);
+
+	return OK;
+}
+
 int (vg_draw_hline)(uint16_t x, uint16_t y, uint16_t len, uint32_t color) {
 	for (int i = 0; i < len; i++) {
 		if (vg_draw_pixel(x+i,y,color) != OK) { return !OK; }
@@ -112,6 +121,21 @@ int (vg_draw_sprite)(struct sprite * sprite) {
 			memcpy(&color, sprite->map + bytes_per_pixel*(col + row * sprite->img.width), bytes_per_pixel);
 
 			if (vg_draw_pixel(sprite->x + col, sprite->y + row, color) != OK) {
+				return !OK;
+			}
+		}
+	}
+	return OK;
+}
+
+int (vg_draw_sprite_in_buffer)(char * buffer, struct sprite * sprite) {
+	uint32_t color;
+	
+	for (int row = 0; row < sprite->img.height; row++) {
+		for (int col = 0; col < sprite->img.width; col++) {
+			memcpy(&color, sprite->map + bytes_per_pixel*(col + row * sprite->img.width), bytes_per_pixel);
+
+			if (vg_draw_pixel_in_buffer(buffer, sprite->x + col, sprite->y + row, color) != OK) {
 				return !OK;
 			}
 		}
