@@ -116,11 +116,31 @@ GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
     } else if (scancode == KBC_RIGHT_ARROW_MC) {
         game_set_column_right();
     } else if (scancode == KBC_SPACE_BC) {
-        int result = game_move();
+        game_move();
+        return ANIMATION_GAME;
+    }
+    return IN_GAME;
+}
+
+GAME_STATE (handle_timer_animation_game)() {
+    if (draw_animation_game() == OK) {
+        vg_swap_buffers();
+    }
+    if (check_animation_game_end()) {
+        int result = check_game_end();
         if (result != 0) {
             set_result_game_end_menu(result);
             return END_GAME;
         }
+        next_turn();
+        return IN_GAME;
     }
-    return IN_GAME;
+    return ANIMATION_GAME;
+}
+
+GAME_STATE (handle_keyboard_animation_game)(uint16_t scancode) {
+    if (scancode == KBC_ESQ_BC) {
+        return MAIN_MENU;
+    }
+    return ANIMATION_GAME;
 }

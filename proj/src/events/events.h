@@ -11,6 +11,7 @@
 
 typedef enum {
     IN_GAME,
+    ANIMATION_GAME,
     END_GAME,
     MAIN_MENU,
     PAUSE_MENU,
@@ -45,3 +46,7 @@ GAME_STATE (handle_timer_game)();
 GAME_STATE (handle_keyboard_game)(uint16_t scancode);
 
 GAME_STATE (handle_mouse_game)(struct packet pp);
+
+GAME_STATE (handle_timer_animation_game)();
+
+GAME_STATE (handle_keyboard_animation_game)(uint16_t scancode);

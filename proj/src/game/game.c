@@ -12,10 +12,13 @@ static sprite * turn_player1;
 static sprite * turn_player2;
 static sprite * blue_piece;
 static sprite * red_piece;
+static anim * animation;
 
 int (initialize_game)() {
     state = (game *)malloc(sizeof(game));
     if (state == NULL) { return !OK; }
+
+    animation = (anim *)malloc(sizeof(anim));
 
     board = sprite_new(board_xpm,0,0);
     state->display_buffer = (char *)malloc(vg_get_vram_size());
@@ -66,6 +69,18 @@ int (draw_game)(void) {
     return OK;
 }
 
+int (draw_animation_game)(void) {
+    if (animation->start_y + ANIMATION_DELTA >= animation->final_y) {
+        animation->start_y = animation->final_y;
+        sprite_set_pos(animation->sp, animation->start_x, animation->start_y);
+    } else {
+        animation->start_y += ANIMATION_DELTA;
+        sprite_set_pos(animation->sp, animation->start_x, animation->start_y);
+    }
+    if (draw_game() != OK) { return !OK; }
+    return OK;
+}
+
 void (game_set_column_right)(void) {
     if (state->column + 1 == COLUMN_NUM) return;
     state->column += 1;
@@ -88,38 +103,44 @@ void (update_sprite_column)(void) {
 
 int (game_move)() {
     if (state->board[0][state->column] != EMPTY) { return 0; }
-    int winner, col = 0;
+    int winner, row = 0;
     for (int i = 0; i < ROW_NUM; i++) {
         if (state->board[i][state->column] != 0) {
             state->board[i - 1][state->column] = state->turn;
-            col = i - 1;
+            row = i - 1;
             break;
         } else if (i == ROW_NUM - 1) {
-            col = ROW_NUM - 1;
+            row = ROW_NUM - 1;
             state->board[ROW_NUM - 1][state->column] = state->turn;
         }
     }
 
     if (state->turn == PLAYER1) {
-        sprite_set_pos(blue_piece,
-                        game_get_X_pos(state->column),
-                        game_get_Y_pos(col));
-        vg_draw_sprite_in_buffer(state->display_buffer, blue_piece);
+        game_start_animation(blue_piece,row);
     } else if (state->turn == PLAYER2) {
-        sprite_set_pos(red_piece,
-                        game_get_X_pos(state->column),
-                        game_get_Y_pos(col));
-        vg_draw_sprite_in_buffer(state->display_buffer, red_piece);
+        game_start_animation(red_piece,row);
     }
 
     if ((winner = check_game_end()) != 0) { return winner; }
 
-    next_turn();
     return 0;
 }
 
+void (game_start_animation)(sprite * sp, int row) {
+    animation->sp = sp;
+    animation->start_x = game_get_X_pos(state->column);
+    animation->start_y = game_get_Y_pos(-1);
+    animation->final_y = game_get_Y_pos(row);
+}
+
 void (next_turn)(void) {
-    state->turn = (state->turn == PLAYER1) ? PLAYER2 : PLAYER1;
+    if (state->turn == PLAYER1) {
+        state->turn = PLAYER2;
+        vg_draw_sprite_in_buffer(state->display_buffer, blue_piece);
+    } else if (state->turn == PLAYER2) {
+        state->turn = PLAYER1;
+        vg_draw_sprite_in_buffer(state->display_buffer, red_piece);
+    }
     state->column = COLUMN_CENTER;
     update_sprite_column();
 }
@@ -203,4 +224,8 @@ int (check_game_end)() {
     if (!check_next_move_possible) { return DRAW; }
 
     return 0;
+}
+
+bool (check_animation_game_end)(void) {
+    return animation->start_y == animation->final_y;
 }
