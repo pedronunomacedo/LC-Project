@@ -118,10 +118,6 @@ int (proj_main_loop)(int argc, char *argv[]) {
 									game_state=handle_keyboard_game_end_menu(
 										get_keyboard_scancode());
 									break;
-								case ANIMATION_GAME:
-									game_state=handle_keyboard_animation_game(
-										get_keyboard_scancode());
-									break;
 								default:
 									break;
 							}
