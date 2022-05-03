@@ -102,8 +102,8 @@ void (update_sprite_column)(void) {
 }
 
 int (game_move)() {
-    if (state->board[0][state->column] != EMPTY) { return 0; }
-    int winner, row = 0;
+    if (state->board[0][state->column] != EMPTY) { return !OK; }
+    int row = 0;
     for (int i = 0; i < ROW_NUM; i++) {
         if (state->board[i][state->column] != 0) {
             state->board[i - 1][state->column] = state->turn;
@@ -121,9 +121,7 @@ int (game_move)() {
         game_start_animation(red_piece,row);
     }
 
-    if ((winner = check_game_end()) != 0) { return winner; }
-
-    return 0;
+    return OK;
 }
 
 void (game_start_animation)(sprite * sp, int row) {
