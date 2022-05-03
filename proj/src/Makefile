@@ -10,10 +10,10 @@ PROG=proj
 .PATH: ${.CURDIR}/events
 
 # source code files to be compiled
-SRCS = proj.c events.c timer.c kbc.c graphics.c sprite.c game.c game_utils.c main_menu.c rules_menu.c pause_menu.c game_end_menu.c utils.c
+SRCS = proj.c events.c timer.c kbc.c graphics.c rtc.c sprite.c game.c game_utils.c main_menu.c rules_menu.c pause_menu.c game_end_menu.c font.c utils.c
 
 # additional compilation flags
-CPPFLAGS += -pedantic -D __LCOM_OPTIMIZED__
+CPPFLAGS += -pedantic #-D __LCOM_OPTIMIZED__
 
 # list of library dependencies
 DPADD += ${LIBLCF}

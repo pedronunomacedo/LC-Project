@@ -54,6 +54,8 @@ void (destroy_main_menu)(void) {
 int (draw_main_menu)(void) {
     if (vg_draw_block_sprite_without_checks(background_sprite) != OK) { return !OK; }
 
+    if (draw_date_font() != OK) { return !OK; }
+
     if (check_mouse_in_button(mouse_sprite, play_button)) {
         if (vg_draw_block_sprite_without_checks(play_button_hover) != OK) { return !OK; }
     } else {

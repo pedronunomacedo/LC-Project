@@ -17,6 +17,8 @@
     "sprite.h": "c",
     "*.xpm": "c",
     "main_menu.h": "c",
-    "events.h": "c"
+    "events.h": "c",
+    "font.h": "c",
+    "rtc.h": "c"
   },
 }
