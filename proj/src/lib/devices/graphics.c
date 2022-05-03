@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-static char * video_mem[2] = { NULL, NULL };
+static char * video_mem[3] = { NULL, NULL, NULL };
 static vbe_mode_info_t vmi;
 static uint8_t current_buffer = 0;
 static uint8_t bytes_per_pixel;
@@ -40,13 +40,13 @@ void * (vg_init)(uint16_t mode) {
 
 	/* Allow memory mapping */
 	mr.mr_base = (phys_bytes) vram_base;	
-	mr.mr_limit = mr.mr_base + 2 * vram_size;  
+	mr.mr_limit = mr.mr_base + 3 * vram_size;  
 
 	if( OK != (r = sys_privctl(SELF, SYS_PRIV_ADD_MEM, &mr)))
 		panic("sys_privctl (ADD_MEM) failed: %d\n", r);
 
 	/* Map memory */
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 3; i++) {
 		video_mem[i] = (char *) vm_map_phys(SELF, (void *)(mr.mr_base + i*vram_size), vram_size);
 
 		if(video_mem[i] == MAP_FAILED)
@@ -77,7 +77,7 @@ int (vg_swap_buffers)() {
 		return !OK;
 	}
 	
-	current_buffer = (current_buffer + 1) % 2;
+	current_buffer = (current_buffer + 1) % 3;
 	return OK;
 }
 
