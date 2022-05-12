@@ -2,6 +2,7 @@
 
 #include <lcom/lcf.h>
 
+//vbe utils
 #define VBE_AH 0x4f
 #define VBE_INTERRUPT_VECTOR 0x10
 #define LINEAR_FRAME_BUFFER BIT(14)

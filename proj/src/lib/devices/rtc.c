@@ -1,7 +1,6 @@
 #include "rtc.h"
 
 static char current_date[20];
-static uint8_t year, month, day, hour, minute, second;
 static int rtc_hook_id;
 
 int (rtc_subscribe_int)(uint8_t * bit_no) {
@@ -102,8 +101,9 @@ int (rtc_enable_update_interrupts)(void) {
   return OK;
 }
 
-void handle_update_int(void) {
+void (handle_update_int)(void) {
   wait_valid_rtc();
+  uint8_t year, month, day, hour, minute, second;
 
   if (rtc_read_register(RTC_YEAR, &year) != OK ||
       rtc_read_register(RTC_MONTH, &month) != OK ||
@@ -116,17 +116,5 @@ void handle_update_int(void) {
 
   sprintf(current_date, "%02d/%02d/%04d %02d:%02d:%02d\n", day, month, year + RTC_BASE_YEAR, hour, minute, second);
 }
-
-unsigned (rtc_get_year)(void) { return year + RTC_BASE_YEAR; }
-
-unsigned (rtc_get_month)(void) { return month; }
-
-unsigned (rtc_get_day)(void) { return day; }
-
-unsigned (rtc_get_hour)(void) { return hour; }
-
-unsigned (rtc_get_minute)(void) { return minute; }
-
-unsigned (rtc_get_second)(void) { return second; }
 
 char * (rtc_get_current_date)(void) { return current_date; }
