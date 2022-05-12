@@ -39,18 +39,18 @@ int (draw_pause_menu)(void);
  * 
  * @return sprite* returns the mouse sprite of the pause menu
  */
-sprite * get_mouse_sprite_pause_menu();
+sprite * (get_mouse_sprite_pause_menu)();
 
 /**
  * @brief Get the back button sprite of the pause menu
  * 
  * @return sprite* returns the back button sprite of the pause menu
  */
-sprite * get_back_sprite_pause_menu();
+sprite * (get_back_sprite_pause_menu)();
 
 /**
  * @brief Get the continue button sprite of the pause menu
  * 
  * @return sprite* returns the continue button sprite of the pause menu
  */
-sprite * get_continue_sprite_pause_menu();
+sprite * (get_continue_sprite_pause_menu)();
