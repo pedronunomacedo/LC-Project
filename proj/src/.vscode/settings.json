@@ -20,6 +20,8 @@
     "events.h": "c",
     "font.h": "c",
     "rtc.h": "c",
-    "lab2.h": "c"
+    "lab2.h": "c",
+    "lab3.h": "c",
+    "utils.h": "c"
   },
 }
