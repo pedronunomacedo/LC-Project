@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 }
 
 int (proj_main_loop)(int argc, char *argv[]) {
-	if (vg_init(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
+	if (vg_init_graphic(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
 
 	sprite * init = sprite_new(initializing_xpm,0,0);
 	if (vg_draw_block_sprite_without_checks(init) != OK) { return !OK; }
