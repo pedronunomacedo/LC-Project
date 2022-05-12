@@ -15,8 +15,8 @@
 /**
  * @brief Initialize main menu sprites
  * 
- * @param x 
- * @param y 
+ * @param x start x-axis coordenate of the position of mouse sprite
+ * @param y start y-axis coordenate of the position of mouse sprite
  * @return int Return 0 upon success and non-zero otherwise
  */
 int (initialize_main_menu)(uint32_t x, uint32_t y);
