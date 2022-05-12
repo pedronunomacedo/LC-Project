@@ -24,14 +24,14 @@ int (vg_set_video_mode)(uint16_t mode) {
 	return OK;
 }
 
-void * (vg_init)(uint16_t mode) {
+int (vg_init_graphic)(uint16_t mode) {
 	int r;	
 
 	memset(&vmi, 0, sizeof(vmi));
 
 	if (vbe_get_mode_info(mode, &vmi) != OK) {
 		printf("vg_init(): vbe_get_mode_info() failed\n");
-		return NULL;
+		return !OK;
 	}
 
 	struct minix_mem_range mr;
@@ -59,7 +59,7 @@ void * (vg_init)(uint16_t mode) {
 
 	bytes_per_pixel = vmi.BytesPerScanLine / vmi.XResolution;
 
-	return NULL;
+	return OK;
 }
 
 int (vg_swap_buffers)() {
@@ -96,20 +96,6 @@ int (vg_draw_pixel_in_buffer)(char * buffer, uint16_t x, uint16_t y, uint32_t co
 	memcpy(buffer + bytes_per_pixel * (x + y * vmi.XResolution),
 				 &color, bytes_per_pixel);
 
-	return OK;
-}
-
-int (vg_draw_hline)(uint16_t x, uint16_t y, uint16_t len, uint32_t color) {
-	for (int i = 0; i < len; i++) {
-		if (vg_draw_pixel(x+i,y,color) != OK) { return !OK; }
-	}
-	return OK;
-}
-
-int (vg_draw_rectangle)(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color) {
-	for (int i = 0; i < height; i++) {
-		if (vg_draw_hline(x,y+i,width,color) != OK) { return !OK; }
-	}
 	return OK;
 }
 
