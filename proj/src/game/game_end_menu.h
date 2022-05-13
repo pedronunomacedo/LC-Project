@@ -6,10 +6,29 @@
 #include "lib/utils/utils.h"
 #include "game/game.h"
 
+/**
+ * @brief Initialize game end menu sprites
+ * 
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int (initialize_game_end_menu)(void);
 
+/**
+ * @brief Destroy game end menu sprites
+ * 
+ */
 void (destroy_game_end_menu)(void);
 
+/**
+ * @brief Draw game end menu in the screen
+ * 
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int (draw_game_end_menu)(void);
 
+/**
+ * @brief Set the result of the game 
+ * 
+ * @param res Integer corresponding to the final result of the game
+ */
 void (set_result_game_end_menu)(int res);
