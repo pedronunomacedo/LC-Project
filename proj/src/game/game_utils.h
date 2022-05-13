@@ -16,6 +16,18 @@
 #define POS_4_Y 649
 #define POS_5_Y 759
 
-uint32_t (game_get_X_pos)(int column);
+/**
+ * @brief get the x-axis coordenate of the board
+ * 
+ * @param column number corresponding to the board column
+ * @return uint32_t Return the x-axis coordenate
+ */
+uint32_t game_get_X_pos(int column);
 
-uint32_t (game_get_Y_pos)(int row);
+/**
+ * @brief get the y-axis coordenate of the board
+ * 
+ * @param row number corresponding to the board row
+ * @return uint32_t Return the y-axis coordenate
+ */
+uint32_t game_get_Y_pos(int row);
