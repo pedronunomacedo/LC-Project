@@ -9,6 +9,10 @@
 #include "lib/sprite/sprite.h"
 #include "lib/devices/i8042.h"
 
+/**
+ * @brief 
+ * 
+ */
 typedef enum {
     IN_GAME,
     ANIMATION_GAME,
@@ -19,32 +23,116 @@ typedef enum {
     QUIT,
 } GAME_STATE;
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_main_menu)();
 
+/**
+ * @brief 
+ * 
+ * @param scancode 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_keyboard_main_menu)(uint16_t scancode);
 
+/**
+ * @brief 
+ * 
+ * @param pp 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_mouse_main_menu)(struct packet pp);
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_rules_menu)();
 
+/**
+ * @brief 
+ * 
+ * @param scancode 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_keyboard_rules_menu)(uint16_t scancode);
 
+/**
+ * @brief 
+ * 
+ * @param pp 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_mouse_rules_menu)(struct packet pp);
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_pause_menu)();
 
+/**
+ * @brief 
+ * 
+ * @param scancode 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_keyboard_pause_menu)(uint16_t scancode);
 
+/**
+ * @brief 
+ * 
+ * @param pp 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_mouse_pause_menu)(struct packet pp);
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_game_end_menu)();
 
+/**
+ * @brief 
+ * 
+ * @param scancode 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode);
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_game)();
 
+/**
+ * @brief 
+ * 
+ * @param scancode 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_keyboard_game)(uint16_t scancode);
 
+/**
+ * @brief 
+ * 
+ * @param pp 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_mouse_game)(struct packet pp);
 
+/**
+ * @brief 
+ * 
+ * @return GAME_STATE 
+ */
 GAME_STATE (handle_timer_animation_game)();
