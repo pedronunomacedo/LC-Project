@@ -92,22 +92,22 @@ void (game_set_column_left)(void);
 void (update_sprite_column)(void); 
 
 /**
- * @brief 
+ * @brief Make a game move by updating the board and all informations needed for the game
  * 
  * @return int Return 0 upon success and non-zero otherwise
  */
 int (game_move)();
 
 /**
- * @brief 
+ * @brief Initialization of one animation of the game
  * 
- * @param sp 
- * @param row 
+ * @param sp Sprite that will be used for the animation
+ * @param row Represents the final row of the board which the piece will stop
  */
 void (game_start_animation)(sprite * sp, int row);
 
 /**
- * @brief 
+ * @brief Change the turn and update all the information needed for the game
  * 
  */
 void (next_turn)(void);
@@ -115,16 +115,17 @@ void (next_turn)(void);
 /**
  * @brief 
  * 
- * @return 0
- * @return 1
- * @return 2
+ * @return 0 The game must continue to the next player
+ * @return 1 The game ends and the player 1 won the game
+ * @return 2 The game ends and the player 2 won the game
+ * @return 3 The game ends in a draw
  */
 int (check_game_end)();
 
 /**
- * @brief 
+ * @brief Checks if the game animation is finished
  * 
- * @return true 
- * @return false 
+ * @return true Return true if the game animation is finished
+ * @return false Return false if the game animation is not finished
  */
 bool (check_animation_game_end)(void);
