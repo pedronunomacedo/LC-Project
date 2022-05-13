@@ -24,115 +24,115 @@ typedef enum {
 } GAME_STATE;
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the main menu
  * 
  * @return GAME_STATE 
  */
 GAME_STATE (handle_timer_main_menu)();
 
 /**
- * @brief 
+ * @brief handle keyboard interrupt when the game state correspond to the main menu
  * 
- * @param scancode 
- * @return GAME_STATE 
+ * @param scancode Keyboard scancode of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_keyboard_main_menu)(uint16_t scancode);
 
 /**
- * @brief 
+ * @brief handle mouse interrupt when the game state correspond to the main menu
  * 
- * @param pp 
- * @return GAME_STATE 
+ * @param pp Mouse packet of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_mouse_main_menu)(struct packet pp);
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the rules menu
  * 
- * @return GAME_STATE 
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_rules_menu)();
 
 /**
- * @brief 
+ * @brief handle keyboard interrupt when the game state correspond to the rules menu
  * 
- * @param scancode 
- * @return GAME_STATE 
+ * @param scancode Keyboard scancode of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_keyboard_rules_menu)(uint16_t scancode);
 
 /**
- * @brief 
+ * @brief handle moouse interrupt when the game state correspond to the rules menu
  * 
- * @param pp 
- * @return GAME_STATE 
+ * @param pp Mouse packet of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_mouse_rules_menu)(struct packet pp);
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the pause menu
  * 
- * @return GAME_STATE 
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_pause_menu)();
 
 /**
- * @brief 
+ * @brief handle keyboard interrupt when the game state correspond to the pause menu
  * 
- * @param scancode 
- * @return GAME_STATE 
+ * @param scancode Keyboard scancode of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_keyboard_pause_menu)(uint16_t scancode);
 
 /**
- * @brief 
+ * @brief handle mouse interrupt when the game state correspond to the pause menu
  * 
- * @param pp 
- * @return GAME_STATE 
+ * @param pp Mouse packet of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_mouse_pause_menu)(struct packet pp);
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the game end menu
  * 
- * @return GAME_STATE 
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_game_end_menu)();
 
 /**
- * @brief 
+ * @brief handle keyboard interrupt when the game state correspond to the game end menu
  * 
- * @param scancode 
- * @return GAME_STATE 
+ * @param scancode Keyboard scancode of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode);
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the game itself
  * 
- * @return GAME_STATE 
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_game)();
 
 /**
- * @brief 
+ * @brief handle keyboard interrupt when the game state correspond to the game itself
  * 
- * @param scancode 
- * @return GAME_STATE 
+ * @param scancode Keyboard scancode of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_keyboard_game)(uint16_t scancode);
 
 /**
- * @brief 
+ * @brief handle mouse interrupt when the game state correspond to the game itself
  * 
- * @param pp 
- * @return GAME_STATE 
+ * @param pp Mouse packet of the last interrupt
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_mouse_game)(struct packet pp);
 
 /**
- * @brief 
+ * @brief handle timer interrupt when the game state correspond to the animation
  * 
- * @return GAME_STATE 
+ * @return GAME_STATE Next game state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_animation_game)();
