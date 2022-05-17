@@ -59,10 +59,15 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 }
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u): under construction\n", __func__, xpm, x, y);
+  vg_init(0x105);
+  
+  //vg_draw_sprite(x,y);
+  xpm_image_t img;
+  char * sprite = (char *)xpm_load(xpm,XPM_INDEXED,&img);
+  vg_draw_sprite(sprite,img,x,y);
 
-  return 1;
+  wait_for_ESQ();
+  return vg_exit();
 }
 
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
