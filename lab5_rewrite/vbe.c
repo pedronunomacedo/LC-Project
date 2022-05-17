@@ -109,3 +109,12 @@ int (vg_draw_pattern)(uint16_t mode,uint8_t no_rectangles, uint32_t first, uint8
 
   return OK;
 }
+
+int (vg_draw_sprite)(char* xpm, xpm_image_t img, uint16_t x, uint16_t y) {
+  for (int i = 0; i < img.height; i++) {
+    memcpy(video_mem + bytes_per_pixel * (x + (y + i) * vmi.XResolution),
+            xpm + bytes_per_pixel * i * img.width,
+            bytes_per_pixel * img.width);
+  }
+  return OK;
+}
