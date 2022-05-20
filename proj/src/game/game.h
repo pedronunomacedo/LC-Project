@@ -60,6 +60,13 @@ void (destroy_game)(void);
 void (start_game)(void);
 
 /**
+ * @brief Get the number that correspond to the current turn of the game
+ * 
+ * @return game turn
+ */
+int (get_turn_game)(void);
+
+/**
  * @brief Draw the game in the screen
  * 
  * @return int Return 0 upon success and non-zero otherwise
@@ -129,3 +136,10 @@ int (check_game_end)();
  * @return false Return false if the game animation is not finished
  */
 bool (check_animation_game_end)(void);
+
+/**
+ * @brief Get the mouse sprite of the game
+ * 
+ * @return sprite* returns the mouse sprite of the main menu
+ */
+sprite * (get_mouse_sprite_game)();
