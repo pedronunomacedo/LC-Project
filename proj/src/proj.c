@@ -54,13 +54,16 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	int r, ipc_status;
 	message msg;
 	GAME_STATE game_state = MAIN_MENU;
+
+	uint32_t init_middle_width = WINDOW_WIDTH / 2;
+	uint32_t init_middle_height = WINDOW_HEIGHT / 3;
 	
-	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
-	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
-	if (initialize_pause_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_main_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
+	if (initialize_rules_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
+	if (initialize_pause_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
 	if (initialize_font() != OK) { return !OK; }
 	if (initialize_game_end_menu() != OK) { return !OK; }
-	if (initialize_game() != OK) { return !OK; }
+	if (initialize_game(init_middle_width, init_middle_height) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
