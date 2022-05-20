@@ -109,15 +109,28 @@ GAME_STATE (handle_timer_game)() {
 }
 
 GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
-    if (scancode == KBC_ESQ_BC) {
-        return PAUSE_MENU;
-    } else if (scancode == KBC_LEFT_ARROW_MC) {
-        game_set_column_left();
-    } else if (scancode == KBC_RIGHT_ARROW_MC) {
-        game_set_column_right();
-    } else if (scancode == KBC_SPACE_BC) {
-        if (game_move() != OK) { return IN_GAME; }
-        return ANIMATION_GAME;
+    if (get_turn_game() == PLAYER1) {
+        if (scancode == KBC_ESQ_BC) {
+            return PAUSE_MENU;
+        } else if (scancode == KBC_LEFT_ARROW_MC) {
+            game_set_column_left();
+        } else if (scancode == KBC_RIGHT_ARROW_MC) {
+            game_set_column_right();
+        } else if (scancode == KBC_SPACE_BC) {
+            if (game_move() != OK) { return IN_GAME; }
+            return ANIMATION_GAME;
+        }
+    }
+    return IN_GAME;
+}
+
+GAME_STATE (handle_mouse_pause_menu)(struct packet pp) {
+    if (get_turn_game() == PLAYER2) {
+        struct sprite * mouse = get_mouse_sprite_game();
+        sprite_set_pos_delta(get_mouse_sprite_game(), pp.delta_x, pp.delta_y);
+        if (pp.lb && !pp.rb && !pp.mb) {
+            next_turn();
+        }
     }
     return IN_GAME;
 }

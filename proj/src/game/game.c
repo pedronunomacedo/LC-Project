@@ -67,6 +67,10 @@ void (start_game)(void) {
     update_sprite_column();
 }
 
+int (get_turn_game)(void) {
+    return state->turn;
+}
+
 int (draw_game)(void) {
     vg_set_current_buffer(state->display_buffer);
     if (state->turn == PLAYER1) {
@@ -236,4 +240,8 @@ int (check_game_end)() {
 
 bool (check_animation_game_end)(void) {
     return animation->start_y == animation->final_y;
+}
+
+sprite * (get_mouse_sprite_game)() {
+    return mouse;
 }

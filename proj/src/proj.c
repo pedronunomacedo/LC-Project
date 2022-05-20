@@ -140,6 +140,9 @@ int (proj_main_loop)(int argc, char *argv[]) {
 								case PAUSE_MENU:
 									game_state=handle_mouse_pause_menu(get_mouse_packet());
 									break;
+								case IN_GAME:
+									game_state=handle_mouse_game(get_mouse_packet());
+									break;
 								default:
 									break;
 							}
