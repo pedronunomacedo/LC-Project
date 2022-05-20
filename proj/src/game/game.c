@@ -5,16 +5,20 @@
 #include "assets/game/turn_player2.xpm"
 #include "assets/game/pieces/blue_piece.xpm"
 #include "assets/game/pieces/red_piece.xpm"
+#include "assets/mouse/mouse.xpm"
 
 static game * state;
 static sprite * board;
+static sprite * mouse;
 static sprite * turn_player1;
 static sprite * turn_player2;
 static sprite * blue_piece;
 static sprite * red_piece;
 static anim * animation;
+static uint32_t init_width_pos;
+static uint32_t init_height_pos;
 
-int (initialize_game)() {
+int (initialize_game)(uint32_t x, uint32_t y) {
     state = (game *)malloc(sizeof(game));
     if (state == NULL) { return !OK; }
 
@@ -26,20 +30,26 @@ int (initialize_game)() {
         return !OK;
     }
 
+    mouse = sprite_new(mouse_xpm, x, y);
     turn_player1 = sprite_new(turn_player1_xpm,862,15);
     turn_player2 = sprite_new(turn_player2_xpm,862,15);
     blue_piece = sprite_new(blue_piece_xpm,0,0);
     red_piece = sprite_new(red_piece_xpm,0,0);
     if (board == NULL ||
+        mouse == NULL ||
         turn_player1 == NULL ||
         turn_player2 == NULL) {
         return !OK;
     }
+
+    init_width_pos = x;
+    init_height_pos = y;
     return OK;
 }
 
 void (destroy_game)(void) {
     sprite_destroy(board);
+    sprite_destroy(mouse);
     sprite_destroy(turn_player1);
     sprite_destroy(turn_player2);
     sprite_destroy(blue_piece);

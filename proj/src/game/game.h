@@ -45,7 +45,7 @@ typedef struct anim
  * 
  * @return int Return 0 upon success and non-zero otherwise
  */
-int (initialize_game)();
+int (initialize_game)(uint32_t x, uint32_t y);
 
 /**
  * @brief Destroy game sprites, the game and the animation object
