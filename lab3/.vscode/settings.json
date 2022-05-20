@@ -13,6 +13,11 @@
     "lcf.h": "c",
     "stdint.h": "c",
     "i8042.h": "c",
-    "lab2.h": "c"
+    "lab2.h": "c",
+    "stdio.h": "c",
+    "stdlib.h": "c",
+    "sysutil.h": "c",
+    "time.h": "c",
+    "types.h": "c"
   },
 }
