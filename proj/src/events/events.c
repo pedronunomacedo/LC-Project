@@ -124,10 +124,10 @@ GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
     return IN_GAME;
 }
 
-GAME_STATE (handle_mouse_pause_menu)(struct packet pp) {
+GAME_STATE (handle_mouse_game)(struct packet pp) {
     if (get_turn_game() == PLAYER2) {
-        struct sprite * mouse = get_mouse_sprite_game();
-        sprite_set_pos_delta(get_mouse_sprite_game(), pp.delta_x, pp.delta_y);
+        //struct sprite * mouse = get_mouse_sprite_game();
+        //sprite_set_pos_delta(get_mouse_sprite_game(), pp.delta_x, pp.delta_y);
         if (pp.lb && !pp.rb && !pp.mb) {
             next_turn();
         }

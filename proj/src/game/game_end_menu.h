@@ -6,6 +6,9 @@
 #include "lib/utils/utils.h"
 #include "game/game.h"
 
+#define GAME_END_BTN_X 376
+#define GAME_END_BTN_Y 700
+
 /**
  * @brief Initialize game end menu sprites
  * 
