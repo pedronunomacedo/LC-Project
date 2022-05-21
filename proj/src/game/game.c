@@ -15,8 +15,8 @@ static sprite * turn_player2;
 static sprite * blue_piece;
 static sprite * red_piece;
 static anim * animation;
-static uint32_t init_width_pos;
-static uint32_t init_height_pos;
+static uint32_t init_x_pos;
+static uint32_t init_y_pos;
 
 int (initialize_game)(uint32_t x, uint32_t y) {
     state = (game *)malloc(sizeof(game));
@@ -42,8 +42,8 @@ int (initialize_game)(uint32_t x, uint32_t y) {
         return !OK;
     }
 
-    init_width_pos = x;
-    init_height_pos = y;
+    init_x_pos = x;
+    init_y_pos = y;
     return OK;
 }
 
@@ -60,6 +60,7 @@ void (destroy_game)(void) {
 
 void (start_game)(void) {
     memcpy(state->display_buffer, board->map, vg_get_vram_size());
+    sprite_set_pos(mouse, init_x_pos, init_y_pos);
     state->turn = PLAYER1;
     state->column = COLUMN_CENTER;
     for (int i = 0; i < ROW_NUM; i++) 
@@ -148,6 +149,7 @@ void (game_start_animation)(sprite * sp, int row) {
 void (next_turn)(void) {
     if (state->turn == PLAYER1) {
         state->turn = PLAYER2;
+        sprite_set_pos(mouse, init_x_pos, init_y_pos);
         vg_draw_sprite_in_buffer(state->display_buffer, blue_piece);
     } else if (state->turn == PLAYER2) {
         state->turn = PLAYER1;

@@ -108,6 +108,14 @@ GAME_STATE (handle_timer_game_end_menu)();
 GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode);
 
 /**
+ * @brief handle mouse interrupt when the game state correspond to the game end menu
+ * 
+ * @param pp Mouse packet of the last interrupt
+ * @return GAME_STATE Next state of the program after handling the interrupt
+ */
+GAME_STATE (handle_mouse_game_end_menu)(struct packet pp);
+
+/**
  * @brief handle timer interrupt when the game state correspond to the game itself
  * 
  * @return GAME_STATE Next state of the program after handling the interrupt
