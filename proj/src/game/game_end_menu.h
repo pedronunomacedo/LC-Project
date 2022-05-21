@@ -35,3 +35,17 @@ int (draw_game_end_menu)(void);
  * @param res Integer corresponding to the final result of the game
  */
 void (set_result_game_end_menu)(int res);
+
+/**
+ * @brief Get the back button sprite of the game end menu
+ * 
+ * @return sprite* returns the back button sprite of the game end menu
+ */
+sprite * (get_back_sprite_game_end_menu)();
+
+/**
+ * @brief Get the mouse sprite of the game end menu
+ * 
+ * @return sprite* returns the mouse sprite of the game end menu
+ */
+sprite * (get_mouse_sprite_game_end_menu)();

@@ -140,6 +140,6 @@ bool (check_animation_game_end)(void);
 /**
  * @brief Get the mouse sprite of the game
  * 
- * @return sprite* returns the mouse sprite of the main menu
+ * @return sprite* returns the mouse sprite of the game
  */
 sprite * (get_mouse_sprite_game)();
