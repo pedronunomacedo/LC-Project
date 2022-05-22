@@ -2,6 +2,12 @@
 
 #include <lcom/lcf.h>
 
+/** @defgroup vbe vbe
+ * @{
+ *
+ * Constants for programming the vbe
+ */
+
 //vbe utils
 #define VBE_AH 0x4f
 #define VBE_INTERRUPT_VECTOR 0x10
@@ -27,3 +33,6 @@
 #define MODE_RES_800x600_BITS_24 0x115 //(8:8:8)
 #define MODE_RES_1280x1024_BITS_16 0x11A //(5:6:5)
 #define MODE_RES_1152x864_BITS_32 0x14C //((8:)8:8:8)
+
+/**@} */
+/* EOF */

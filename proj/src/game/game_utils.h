@@ -1,6 +1,12 @@
 #pragma once
 #include <lcom/lcf.h>
 
+/** @defgroup game_utils game_utils
+ * @{
+ *
+ * Constants and functions for the game utils
+ */
+
 #define POS_0_X 196
 #define POS_1_X 306
 #define POS_2_X 416
@@ -31,3 +37,6 @@ uint32_t game_get_X_pos(int column);
  * @return uint32_t Return the y-axis coordenate
  */
 uint32_t game_get_Y_pos(int row);
+
+/**@} */
+/* EOF */
