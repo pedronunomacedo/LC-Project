@@ -17,6 +17,7 @@ static sprite * red_piece;
 static anim * animation;
 static uint32_t init_x_pos;
 static uint32_t init_y_pos;
+static bool in_animation;
 
 int (initialize_game)(uint32_t x, uint32_t y) {
     state = (game *)malloc(sizeof(game));
@@ -82,7 +83,9 @@ int (draw_game)(void) {
     } else if (state->turn == PLAYER2) {
         if (vg_draw_block_sprite_without_checks(turn_player2) != OK) { return !OK; }
         if (vg_draw_sprite(red_piece) != OK) { return !OK; }
-        if (vg_draw_sprite(mouse) != OK) { return !OK; }
+        if (!in_animation) {
+            if (vg_draw_sprite(mouse) != OK) { return !OK; }
+        }
     }
     return OK;
 }
@@ -91,6 +94,7 @@ int (draw_animation_game)(void) {
     if (animation->start_y + ANIMATION_DELTA >= animation->final_y) {
         animation->start_y = animation->final_y;
         sprite_set_pos(animation->sp, animation->start_x, animation->start_y);
+        in_animation = false;
     } else {
         animation->start_y += ANIMATION_DELTA;
         sprite_set_pos(animation->sp, animation->start_x, animation->start_y);
@@ -167,6 +171,7 @@ void (game_start_animation)(sprite * sp, int row) {
     animation->start_x = game_get_X_pos(state->column);
     animation->start_y = game_get_Y_pos(-1);
     animation->final_y = game_get_Y_pos(row);
+    in_animation = true;
 }
 
 void (next_turn)(void) {
