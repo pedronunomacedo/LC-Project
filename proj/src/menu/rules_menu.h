@@ -7,8 +7,8 @@
 #include "font.h"
 
 #define MOUSE_SIDE 30
-#define BACK_BTN_X 652
-#define BACK_BTN_Y 664
+#define BACK_BTN_X 570
+#define BACK_BTN_Y 630
 
 /**
  * @brief Initialize rules menu sprites
