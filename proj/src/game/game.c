@@ -80,6 +80,7 @@ int (draw_game)(void) {
     } else if (state->turn == PLAYER2) {
         if (vg_draw_block_sprite_without_checks(turn_player2) != OK) { return !OK; }
         if (vg_draw_sprite(red_piece) != OK) { return !OK; }
+        if (vg_draw_sprite(mouse) != OK) { return !OK; }
     }
     return OK;
 }
@@ -105,6 +106,26 @@ void (game_set_column_right)(void) {
 void (game_set_column_left)(void) {
     if (state->column == 0) return;
     state->column -= 1;
+    update_sprite_column();
+}
+
+void (game_set_column_mouse)(void) {
+    uint32_t x = mouse->x;
+    if (x < POS_1_X) {
+        state->column = 0;
+    } else if (x < POS_2_X) {
+        state->column = 1;
+    } else if (x < POS_3_X) {
+        state->column = 2;
+    } else if (x < POS_4_X) {
+        state->column = 3;
+    } else if (x < POS_5_X) {
+        state->column = 4;
+    } else if (x < POS_6_X) {
+        state->column = 5;
+    } else {
+        state->column = 6;
+    }
     update_sprite_column();
 }
 
@@ -187,7 +208,7 @@ int (check_game_end)() {
             if (i == 0) {
                 //right-down
                 for (int ii = i, jj = j; 
-                        ii < ROW_NUM || jj < COLUMN_NUM;
+                        ii < ROW_NUM && jj < COLUMN_NUM;
                         ii++,jj++) {
                     if (state->board[ii][jj] == state->turn) {
                         counter++;
@@ -197,7 +218,7 @@ int (check_game_end)() {
                 counter = 0;
                 //left-down
                 for (int ii = i, jj = j; 
-                        ii < ROW_NUM || jj >= 0;
+                        ii < ROW_NUM && jj >= 0;
                         ii++,jj--) {
                     if (state->board[ii][jj] == state->turn) {
                         counter++;
@@ -207,7 +228,7 @@ int (check_game_end)() {
             } else {
                 //right-up
                 for (int ii = i, jj = j; 
-                        ii >= 0 || jj < COLUMN_NUM;
+                        ii >= 0 && jj < COLUMN_NUM;
                         ii--,jj++) {
                     if (state->board[ii][jj] == state->turn) {
                         counter++;
@@ -217,7 +238,7 @@ int (check_game_end)() {
                 counter = 0;
                 //left-up
                 for (int ii = i, jj = j; 
-                        ii >= 0 || jj >= 0;
+                        ii >= 0 && jj >= 0;
                         ii--,jj--) {
                     if (state->board[ii][jj] == state->turn) {
                         counter++;
