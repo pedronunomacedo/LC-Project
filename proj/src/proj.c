@@ -18,8 +18,22 @@
 
 #include "assets/game/initializing.xpm"
 
+/** @defgroup proj proj
+ * @{
+ *
+ * Functions for the proj
+ */
+
+
 #define FPS 60
 
+/**
+ * @brief Main function
+ * 
+ * @param argc Number of arguments
+ * @param argv List of arguments
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
 	lcf_trace_calls("/home/lcom/labs/proj/trace.txt");
@@ -30,6 +44,13 @@ int main(int argc, char *argv[]) {
 	return OK;
 }
 
+/**
+ * @brief Program main loop
+ * 
+ * @param argc Number of arguments
+ * @param argv List of arguments
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int (proj_main_loop)(int argc, char *argv[]) {
 	if (vg_init_graphic(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
 
@@ -179,3 +200,6 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	
 	return vg_exit();
 }
+
+/**@} */
+/* EOF */

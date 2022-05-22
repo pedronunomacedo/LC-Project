@@ -4,6 +4,12 @@
 #include <stdint.h>
 #include "lib/sprite/sprite.h"
 
+/** @defgroup utils utils
+ * @{
+ *
+ * Utils functions
+ */
+
 /**
  * @brief Returns the LSB of a 2 byte integer
  *
@@ -40,3 +46,6 @@ int (util_sys_inb)(int port, uint8_t *value);
  * @return false if the position of mouse sprite is not above of the button sprite
  */
 bool (check_mouse_in_button)(struct sprite * mouse, struct sprite * button);
+
+/**@} */
+/* EOF */
