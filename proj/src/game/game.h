@@ -5,6 +5,12 @@
 #include "lib/devices/graphics.h"
 #include "game/game_utils.h"
 
+/** @defgroup game game
+ * @{
+ *
+ * Constants and functions for the game
+ */
+
 #define COLUMN_NUM 7
 #define COLUMN_CENTER 3
 #define ROW_NUM 6
@@ -149,3 +155,6 @@ bool (check_animation_game_end)(void);
  * @return sprite* returns the mouse sprite of the game
  */
 sprite * (get_mouse_sprite_game)();
+
+/**@} */
+/* EOF */

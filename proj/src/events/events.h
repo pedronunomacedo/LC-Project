@@ -9,6 +9,12 @@
 #include "lib/sprite/sprite.h"
 #include "lib/devices/i8042.h"
 
+/** @defgroup events events
+ * @{
+ *
+ * Functions for the events
+ */
+
 /**
  * @brief Enum wich saves the state of the program
  * 
@@ -144,3 +150,6 @@ GAME_STATE (handle_mouse_game)(struct packet pp);
  * @return GAME_STATE Next state of the program after handling the interrupt
  */
 GAME_STATE (handle_timer_animation_game)();
+
+/**@} */
+/* EOF */

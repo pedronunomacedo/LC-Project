@@ -6,6 +6,12 @@
 #include "lib/utils/utils.h"
 #include "font.h"
 
+/** @defgroup main_menu main_menu
+ * @{
+ *
+ * Functions for the main menu
+ */
+
 #define MOUSE_SIDE 30
 #define BUTTONS_X 376
 #define PLAY_BTN_Y 400
@@ -61,3 +67,6 @@ sprite * (get_rules_sprite_main_menu)();
  * @return sprite* returns the quit button sprite of the main menu
  */
 sprite * (get_quit_sprite_main_menu)();
+
+/**@} */
+/* EOF */

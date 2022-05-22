@@ -6,6 +6,12 @@
 #include "lib/utils/utils.h"
 #include "game/game.h"
 
+/** @defgroup game_end_menu game_end_menu
+ * @{
+ *
+ * Functions for the game end menu
+ */
+
 #define GAME_END_BTN_X 376
 #define GAME_END_BTN_Y 664
 
@@ -49,3 +55,6 @@ sprite * (get_back_sprite_game_end_menu)();
  * @return sprite* returns the mouse sprite of the game end menu
  */
 sprite * (get_mouse_sprite_game_end_menu)();
+
+/**@} */
+/* EOF */

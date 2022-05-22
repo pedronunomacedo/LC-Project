@@ -12,6 +12,12 @@
 #define DATE_SEP_WIDTH 30
 #define TIME_SEP_WIDTH 15
 
+/** @defgroup font font
+ * @{
+ *
+ * Functions for the font
+ */
+
 /**
  * @brief Initialize font sprites
  * 
@@ -39,3 +45,6 @@ int (draw_date_font)(void);
  * @return sprite* Character sprite of the correspondent char c
  */
 sprite * (get_sprite_font)(char c);
+
+/**@} */
+/* EOF */

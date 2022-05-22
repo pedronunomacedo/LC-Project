@@ -3,6 +3,12 @@
 #include <lcom/lcf.h>
 #include "i8042.h"
 
+/** @defgroup kbc kbc
+ * @{
+ *
+ * Functions for using the i8042 kbc
+ */
+
 /**
  * @brief Keyboard interrupt handler
  * 
@@ -100,3 +106,6 @@ int (get_status_register)(uint8_t * st);
  * 
  */
 void (wait_for_IB_is_clear)();
+
+/**@} */
+/* EOF */
