@@ -38,7 +38,9 @@ int (initialize_game)(uint32_t x, uint32_t y) {
     if (board == NULL ||
         mouse == NULL ||
         turn_player1 == NULL ||
-        turn_player2 == NULL) {
+        turn_player2 == NULL ||
+        blue_piece == NULL || 
+        red_piece == NULL) {
         return !OK;
     }
 
