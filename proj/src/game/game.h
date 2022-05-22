@@ -93,6 +93,12 @@ void (game_set_column_right)(void);
 void (game_set_column_left)(void);
 
 /**
+ * @brief set current column according to mouse position
+ * 
+ */
+void (game_set_column_mouse)(void);
+
+/**
  * @brief update sprite with the new column
  * 
  */
