@@ -25,8 +25,13 @@ int (vg_set_video_mode)(uint16_t mode) {
 }
 
 int (vg_init_graphic)(uint16_t mode) {
-	int r;	
 
+	if (vg_set_video_mode(mode) != OK) {
+		printf("vg_init(): vg_set_video_mode() failed\n");
+		return !OK;
+	}
+
+	int r;	
 	memset(&vmi, 0, sizeof(vmi));
 
 	if (vbe_get_mode_info(mode, &vmi) != OK) {
@@ -54,8 +59,6 @@ int (vg_init_graphic)(uint16_t mode) {
 		
 		bzero(video_mem[i], vram_size);
 	}
-
-	vg_set_video_mode(mode);
 
 	bytes_per_pixel = vmi.BytesPerScanLine / vmi.XResolution;
 
