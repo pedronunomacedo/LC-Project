@@ -25,12 +25,6 @@ int (vg_set_video_mode)(uint16_t mode) {
 }
 
 int (vg_init_graphic)(uint16_t mode) {
-
-	if (vg_set_video_mode(mode) != OK) {
-		printf("vg_init(): vg_set_video_mode() failed\n");
-		return !OK;
-	}
-
 	int r;	
 	memset(&vmi, 0, sizeof(vmi));
 
@@ -58,6 +52,11 @@ int (vg_init_graphic)(uint16_t mode) {
 			panic("couldn't map video memory");
 		
 		bzero(video_mem[i], vram_size);
+	}
+
+	if (vg_set_video_mode(mode) != OK) {
+		printf("vg_init(): vg_set_video_mode() failed\n");
+		return !OK;
 	}
 
 	bytes_per_pixel = vmi.BytesPerScanLine / vmi.XResolution;
