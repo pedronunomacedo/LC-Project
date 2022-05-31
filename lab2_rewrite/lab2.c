@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "rtc.h"
+
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -52,6 +54,44 @@ int(timer_test_int)(uint8_t time) {
   int ipc_status, r;
   message msg;
 
+  uint8_t rtc_bit_no;
+  if (rtc_subscribe_int(&rtc_bit_no) != OK) {
+    printf("timer_test_int: timer_subscribe_int failed");
+    return !OK;
+  }
+  uint32_t rtc_irq_set = BIT(rtc_bit_no);
+  rtc_disable_all_interrupts();
+  rtc_enable_update_interrupts();
+
+  while( 1 ) {
+     if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+         printf("driver_receive failed with: %d", r);
+        continue;
+    }
+    if (is_ipc_notify(ipc_status)) {
+        switch (_ENDPOINT_P(msg.m_source)) {
+            case HARDWARE:			
+                if (msg.m_notify.interrupts & rtc_irq_set) { 
+                  rtc_ih();
+                }
+                break;
+            default:
+                break;
+        }
+    } 
+  }
+
+  if (rtc_unsubscribe_int() != OK) {
+    printf("timer_test_int: timer_unsubscribe_int failed");
+    return !OK;
+  }
+  return OK;
+}
+
+/*int(timer_test_int)(uint8_t time) {
+  int ipc_status, r;
+  message msg;
+
   uint8_t timer_bit_no;
   if (timer_subscribe_int(&timer_bit_no) != OK) {
     printf("timer_test_int: timer_subscribe_int failed");
@@ -86,4 +126,6 @@ int(timer_test_int)(uint8_t time) {
     return !OK;
   }
   return OK;
-}
+}*/
+
+
