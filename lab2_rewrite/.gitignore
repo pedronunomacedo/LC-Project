@@ -1,6 +1,7 @@
 lab2
 lab2.o
 timer.o
+rtc.o
 utils.o
 .gdbinit
 trace.txt
