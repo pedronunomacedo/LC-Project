@@ -6,9 +6,15 @@
 #include "lib/utils/utils.h"
 #include "font.h"
 
+/** @defgroup rules_menu rules_menu
+ * @{
+ *
+ * Functions for the rules menu
+ */
+
 #define MOUSE_SIDE 30
-#define BACK_BTN_X 652
-#define BACK_BTN_Y 664
+#define BACK_BTN_X 570
+#define BACK_BTN_Y 630
 
 /**
  * @brief Initialize rules menu sprites
@@ -45,3 +51,6 @@ sprite * (get_mouse_sprite_rules_menu)();
  * @return sprite* returns the back button sprite of the rules menu
  */
 sprite * (get_back_sprite_rules_menu)();
+
+/**@} */
+/* EOF */

@@ -2,6 +2,12 @@
 
 #include <lcom/lcf.h>
 
+/** @defgroup rtc rtc
+ * @{
+ *
+ * Constants and functions for programming RTC
+ */
+
 //rtc utils
 #define RTC_DELAY 2000
 #define RTC_IRQ 8
@@ -108,3 +114,6 @@ int (rtc_enable_update_interrupts)(void);
  * @return char* Returns the current date
  */
 char * (rtc_get_current_date)(void);
+
+/**@} */
+/* EOF */

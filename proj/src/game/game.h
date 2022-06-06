@@ -5,6 +5,12 @@
 #include "lib/devices/graphics.h"
 #include "game/game_utils.h"
 
+/** @defgroup game game
+ * @{
+ *
+ * Constants and functions for the game
+ */
+
 #define COLUMN_NUM 7
 #define COLUMN_CENTER 3
 #define ROW_NUM 6
@@ -45,7 +51,7 @@ typedef struct anim
  * 
  * @return int Return 0 upon success and non-zero otherwise
  */
-int (initialize_game)();
+int (initialize_game)(uint32_t x, uint32_t y);
 
 /**
  * @brief Destroy game sprites, the game and the animation object
@@ -58,6 +64,13 @@ void (destroy_game)(void);
  * 
  */
 void (start_game)(void);
+
+/**
+ * @brief Get the number that correspond to the current turn of the game
+ * 
+ * @return game turn
+ */
+int (get_turn_game)(void);
 
 /**
  * @brief Draw the game in the screen
@@ -84,6 +97,12 @@ void (game_set_column_right)(void);
  * 
  */
 void (game_set_column_left)(void);
+
+/**
+ * @brief set current column according to mouse position
+ * 
+ */
+void (game_set_column_mouse)(void);
 
 /**
  * @brief update sprite with the new column
@@ -129,3 +148,13 @@ int (check_game_end)();
  * @return false Return false if the game animation is not finished
  */
 bool (check_animation_game_end)(void);
+
+/**
+ * @brief Get the mouse sprite of the game
+ * 
+ * @return sprite* returns the mouse sprite of the game
+ */
+sprite * (get_mouse_sprite_game)();
+
+/**@} */
+/* EOF */
