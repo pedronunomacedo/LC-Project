@@ -2,6 +2,12 @@
 
 #include <lcom/lcf.h>
 
+/** @defgroup i8042 i8042
+ * @{
+ *
+ * Constants for programming the i8042 KBC.
+ */
+
 //keyboard codes
 #define KBC_ESQ_BC 0x81
 #define KBC_LEFT_ARROW_MC 0x4be0
@@ -64,3 +70,6 @@
 //mouse data reporting commands
 #define MOUSE_ENABLE_DATA_REPORTING 0xf4
 #define MOUSE_DISABLE_DATA_REPORTING 0xf5
+
+/**@} */
+/* EOF */

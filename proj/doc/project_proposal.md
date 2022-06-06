@@ -1,7 +1,7 @@
 # *CONNECT 4* - LCOM PROJECT
 
 
-## Connect 4
+## Project Proposal
 
 Our idea to this project is to implement the traditional connect 4 game, a two-player board game in which each player is associated with a color, and then, in alternate turns, the player drops a piece in a column of the board.
 The winner is the first player to form a line with 4 contiguous pieces of the respective color.
@@ -41,7 +41,7 @@ The pause menu will have the option to go back to the main menu or to continue t
 #### LCOM Project for group t11g01
 ##### Group Members:
 
-Fernando Rego - **up201905951@edu.fe.up.pt**  
-Gonçalo Ferreira - **up202004761@edu.fe.up.pt**  
-João Duarte - **up201707984@edu.fc.up.pt**  
-Pedro Macedo - **up202007531@edu.fe.up.pt**  
+Fernando Rego - up201905951@edu.fe.up.pt  
+Gonçalo Ferreira - up202004761@edu.fe.up.pt  
+João Duarte - up201707984@edu.fc.up.pt  
+Pedro Macedo - up202007531@edu.fe.up.pt  
