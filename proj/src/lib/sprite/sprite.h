@@ -4,6 +4,12 @@
 #define WINDOW_WIDTH 1152
 #define WINDOW_HEIGHT 864
 
+/** @defgroup sprite sprite
+ * @{
+ *
+ * Functions for using sprites
+ */
+
 /**
  * @brief Struct with the position, xpm_image and the map of the sprite
  * 
@@ -50,3 +56,6 @@ void (sprite_set_pos)(sprite * sprite, uint32_t x, uint32_t y);
  * @param y_delta Delta value to add to y-axis coordenate of the top-left of the sprite
  */
 void (sprite_set_pos_delta)(sprite * sprite, int x_delta, int y_delta);
+
+/**@} */
+/* EOF */

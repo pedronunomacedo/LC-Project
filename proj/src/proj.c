@@ -18,8 +18,22 @@
 
 #include "assets/game/initializing.xpm"
 
+/** @defgroup proj proj
+ * @{
+ *
+ * Functions for the proj
+ */
+
+
 #define FPS 60
 
+/**
+ * @brief Main function
+ * 
+ * @param argc Number of arguments
+ * @param argv List of arguments
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int main(int argc, char *argv[]) {
 	lcf_set_language("EN-US");
 	lcf_trace_calls("/home/lcom/labs/proj/trace.txt");
@@ -30,6 +44,13 @@ int main(int argc, char *argv[]) {
 	return OK;
 }
 
+/**
+ * @brief Program main loop
+ * 
+ * @param argc Number of arguments
+ * @param argv List of arguments
+ * @return int Return 0 upon success and non-zero otherwise
+ */
 int (proj_main_loop)(int argc, char *argv[]) {
 	if (vg_init_graphic(MODE_RES_1152x864_BITS_32) != OK) { return !OK; }
 
@@ -54,13 +75,16 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	int r, ipc_status;
 	message msg;
 	GAME_STATE game_state = MAIN_MENU;
+
+	uint32_t init_middle_width = WINDOW_WIDTH / 2;
+	uint32_t init_middle_height = WINDOW_HEIGHT / 3;
 	
-	if (initialize_main_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
-	if (initialize_rules_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
-	if (initialize_pause_menu((WINDOW_WIDTH)/2,(WINDOW_HEIGHT)/3) != OK) { return !OK; }
+	if (initialize_main_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
+	if (initialize_rules_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
+	if (initialize_pause_menu(init_middle_width, init_middle_height) != OK) { return !OK; }
 	if (initialize_font() != OK) { return !OK; }
 	if (initialize_game_end_menu() != OK) { return !OK; }
-	if (initialize_game() != OK) { return !OK; }
+	if (initialize_game(init_middle_width, init_middle_height) != OK) { return !OK; }
 
 	while( game_state != QUIT ) {
     	if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -137,6 +161,13 @@ int (proj_main_loop)(int argc, char *argv[]) {
 								case PAUSE_MENU:
 									game_state=handle_mouse_pause_menu(get_mouse_packet());
 									break;
+								case IN_GAME:
+									game_state=handle_mouse_game(get_mouse_packet());
+									break;
+								case END_GAME:
+									game_state=handle_mouse_game_end_menu(
+										get_mouse_packet());
+									break;
 								default:
 									break;
 							}
@@ -169,3 +200,6 @@ int (proj_main_loop)(int argc, char *argv[]) {
 	
 	return vg_exit();
 }
+
+/**@} */
+/* EOF */

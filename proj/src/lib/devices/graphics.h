@@ -7,6 +7,12 @@
 #include "vbe.h"
 #include "../sprite/sprite.h"
 
+/** @defgroup graphics graphics
+ * @{
+ *
+ * Functions for using the vbe
+ */
+
 /**
  * @brief Set the graphic mode
  * 
@@ -93,3 +99,6 @@ void (vg_set_current_buffer)(char * buffer);
  * @return unsigned int Returns the size of the vram
  */
 unsigned int (vg_get_vram_size)();
+
+/**@} */
+/* EOF */
