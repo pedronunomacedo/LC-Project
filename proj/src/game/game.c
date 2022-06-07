@@ -59,6 +59,7 @@ void (destroy_game)(void) {
     sprite_destroy(red_piece);
     free(state->display_buffer);
     free(state);
+    free(animation);
 }
 
 void (start_game)(void) {
