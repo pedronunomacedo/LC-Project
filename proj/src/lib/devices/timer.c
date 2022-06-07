@@ -108,7 +108,3 @@ int (timer_unsubscribe_int)() {
 void (timer_int_handler)() {
 	timer_counter++;
 }
-
-uint32_t (get_timer_counter)(void) {
-	return timer_counter;
-}

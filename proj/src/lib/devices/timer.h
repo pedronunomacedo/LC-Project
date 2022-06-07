@@ -83,9 +83,5 @@ int(timer_print_config)(uint8_t timer, enum timer_status_field field,
  */
 uint32_t(timer_print_elapsed_time)();
 
-/**
- * @brief Get the timer interrupt counter
- * 
- * @return uint32_t 
- */
-uint32_t (get_timer_counter)(void);
+/**@} */
+/* EOF */

@@ -48,9 +48,9 @@ GAME_STATE (handle_keyboard_rules_menu)(uint16_t scancode) {
 
 GAME_STATE (handle_mouse_rules_menu)(struct packet pp) {
     struct sprite * mouse = get_mouse_sprite_rules_menu();
-    sprite_set_pos_delta(get_mouse_sprite_rules_menu(), pp.delta_x, pp.delta_y);
+    sprite_set_pos_delta(mouse, pp.delta_x, pp.delta_y);
     if (pp.lb && !pp.rb && !pp.mb) {
-        if (check_mouse_in_button(get_mouse_sprite_rules_menu(), get_back_sprite_rules_menu())) {
+        if (check_mouse_in_button(mouse, get_back_sprite_rules_menu())) {
             sprite_set_pos(get_mouse_sprite_main_menu(), mouse->x, mouse->y);
             return MAIN_MENU;
         }
@@ -74,13 +74,13 @@ GAME_STATE (handle_keyboard_pause_menu)(uint16_t scancode) {
 
 GAME_STATE (handle_mouse_pause_menu)(struct packet pp) {
     struct sprite * mouse = get_mouse_sprite_pause_menu();
-    sprite_set_pos_delta(get_mouse_sprite_pause_menu(), pp.delta_x, pp.delta_y);
+    sprite_set_pos_delta(mouse, pp.delta_x, pp.delta_y);
     if (pp.lb && !pp.rb && !pp.mb) {
-        if (check_mouse_in_button(get_mouse_sprite_pause_menu(), get_back_sprite_pause_menu())) {
+        if (check_mouse_in_button(mouse, get_back_sprite_pause_menu())) {
             sprite_set_pos(get_mouse_sprite_main_menu(), mouse->x, mouse->y);
             return MAIN_MENU;
         }
-        if (check_mouse_in_button(get_mouse_sprite_pause_menu(),get_continue_sprite_pause_menu())) {
+        if (check_mouse_in_button(mouse,get_continue_sprite_pause_menu())) {
             return IN_GAME;
         }
     }
@@ -101,6 +101,18 @@ GAME_STATE (handle_keyboard_game_end_menu)(uint16_t scancode) {
     return END_GAME;
 }
 
+GAME_STATE (handle_mouse_game_end_menu)(struct packet pp) {
+    struct sprite * mouse = get_mouse_sprite_game_end_menu();
+    sprite_set_pos_delta(mouse, pp.delta_x, pp.delta_y);
+    if (pp.lb && !pp.rb && !pp.mb) {
+        if (check_mouse_in_button(mouse, get_back_sprite_game_end_menu())) {
+            sprite_set_pos(get_mouse_sprite_main_menu(), mouse->x, mouse->y);
+            return MAIN_MENU;
+        }
+    }
+    return END_GAME;
+}
+
 GAME_STATE (handle_timer_game)() {
     if (draw_game() == OK) {
         vg_swap_buffers();
@@ -110,14 +122,30 @@ GAME_STATE (handle_timer_game)() {
 
 GAME_STATE (handle_keyboard_game)(uint16_t scancode) {
     if (scancode == KBC_ESQ_BC) {
-        return PAUSE_MENU;
-    } else if (scancode == KBC_LEFT_ARROW_MC) {
-        game_set_column_left();
-    } else if (scancode == KBC_RIGHT_ARROW_MC) {
-        game_set_column_right();
-    } else if (scancode == KBC_SPACE_BC) {
-        if (game_move() != OK) { return IN_GAME; }
-        return ANIMATION_GAME;
+            return PAUSE_MENU;
+    }
+    if (get_turn_game() == PLAYER1) {
+        if (scancode == KBC_LEFT_ARROW_MC) {
+            game_set_column_left();
+        } else if (scancode == KBC_RIGHT_ARROW_MC) {
+            game_set_column_right();
+        } else if (scancode == KBC_SPACE_BC) {
+            if (game_move() != OK) { return IN_GAME; }
+            return ANIMATION_GAME;
+        }
+    }
+    return IN_GAME;
+}
+
+GAME_STATE (handle_mouse_game)(struct packet pp) {
+    if (get_turn_game() == PLAYER2) {
+        struct sprite * mouse = get_mouse_sprite_game();
+        sprite_set_pos_delta(mouse, pp.delta_x, pp.delta_y);
+        game_set_column_mouse();
+        if (pp.lb && !pp.rb && !pp.mb) {
+            if (game_move() != OK) { return IN_GAME; }
+            return ANIMATION_GAME;
+        }
     }
     return IN_GAME;
 }
@@ -130,6 +158,7 @@ GAME_STATE (handle_timer_animation_game)() {
         int result = check_game_end();
         if (result != 0) {
             set_result_game_end_menu(result);
+            sprite_set_pos(get_mouse_sprite_game_end_menu(), get_mouse_sprite_game()->x, get_mouse_sprite_game()->y);
             return END_GAME;
         }
         next_turn();

@@ -6,6 +6,12 @@
 #include "lib/utils/utils.h"
 #include "font.h"
 
+/** @defgroup pause_menu pause_menu
+ * @{
+ *
+ * Functions for the pause menu
+ */
+
 #define MOUSE_SIDE 30
 #define PAUSE_BACK_BTN_X 602
 #define PAUSE_BACK_BTN_Y 664
@@ -54,3 +60,6 @@ sprite * (get_back_sprite_pause_menu)();
  * @return sprite* returns the continue button sprite of the pause menu
  */
 sprite * (get_continue_sprite_pause_menu)();
+
+/**@} */
+/* EOF */
