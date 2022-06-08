@@ -9,7 +9,7 @@
  */
 
 //rtc utils
-#define RTC_DELAY 2000
+#define RTC_DELAY 20000
 #define RTC_IRQ 8
 #define RTC_BASE_YEAR 2000
 
@@ -19,12 +19,8 @@
 
 // rtc address
 #define RTC_SECONDS 0
-#define RTC_SECONDS_ALARM 1
 #define RTC_MINUTES 2
-#define RTC_MINUTES_ALARM 3
 #define RTC_HOURS 4
-#define RTC_HOURS_ALARM 5
-#define RTC_DAY_WEEK 6
 #define RTC_DAY_MONTH 7
 #define RTC_MONTH 8
 #define RTC_YEAR 9
@@ -64,7 +60,7 @@ int (rtc_unsubscribe_int)();
  * @param input byte read from the register
  * @return int Return 0 upon success and non-zero otherwise
  */
-int rtc_read_register(uint8_t reg, uint8_t * input);
+int (rtc_read_register)(uint8_t reg, uint8_t * input);
 
 /**
  * @brief write byte in a register of the RTC
@@ -73,13 +69,13 @@ int rtc_read_register(uint8_t reg, uint8_t * input);
  * @param output byte to write in the register
  * @return int Return 0 upon success and non-zero otherwise
  */
-int rtc_write_register(uint8_t reg, uint8_t output);
+int (rtc_write_register)(uint8_t reg, uint8_t output);
 
 /**
  * @brief Wait for a valid RTC to read correctly the registers
  * 
  */
-void (wait_valid_rtc)(void);
+void (wait_for_a_valid_rtc)(void);
 
 /**
  * @brief RTC interrupt handler
@@ -92,21 +88,21 @@ void (rtc_ih)(void);
  * @brief RTC update-ended interrupt handler
  * 
  */
-void (handle_update_int)(void);
+void (rtc_handle_update_int)(void);
 
 /**
  * @brief Disable RTC interrupts
  * 
  * @return int Return 0 upon success and non-zero otherwise
  */
-int (rtc_disable_all_interrupts)(void);
+int (rtc_disable_int)(void);
 
 /**
- * @brief Enable RTC interrupts
+ * @brief Enable RTC update interrupts
  * 
  * @return int Return 0 upon success and non-zero otherwise
  */
-int (rtc_enable_update_interrupts)(void);
+int (rtc_enable_update_int)(void);
 
 /**
  * @brief Get the current date from the RTC

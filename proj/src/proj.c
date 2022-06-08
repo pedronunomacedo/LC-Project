@@ -6,7 +6,6 @@
 #include "lib/devices/graphics.h"
 #include "lib/devices/vbe.h"
 #include "lib/devices/rtc.h"
-
 #include "events/events.h"
 #include "menu/main_menu.h"
 #include "menu/rules_menu.h"
@@ -69,8 +68,8 @@ int (proj_main_loop)(int argc, char *argv[]) {
 				keyboard_irq_set = BIT(keyboard_bit_no),
 				mouse_irq_set = BIT(mouse_bit_no),
 				rtc_irq_set = BIT(rtc_bit_no);
-	rtc_disable_all_interrupts();
-  	rtc_enable_update_interrupts();
+	rtc_disable_int();
+  	rtc_enable_update_int();
 
 	int r, ipc_status;
 	message msg;

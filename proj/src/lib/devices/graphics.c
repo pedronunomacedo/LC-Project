@@ -135,11 +135,13 @@ int (vg_draw_block_sprite_without_checks)(struct sprite * sprite) {
 	if (sprite->img.height == vmi.YResolution && sprite->img.width == vmi.XResolution) {
 		memcpy(video_mem[current_buffer], sprite->map, vram_size);
 	} else {
+		uint32_t bytes_per_sprite_line;
 		for (int row = 0; row < sprite->img.height; row++) {
+			bytes_per_sprite_line = bytes_per_pixel * sprite->img.width;
 			memcpy(video_mem[current_buffer] + 
-					bytes_per_pixel * (sprite->x + (row + sprite->y) * vmi.XResolution), 
-					sprite->map + bytes_per_pixel * row * sprite->img.width,
-					bytes_per_pixel * sprite->img.width);
+					bytes_per_pixel * (sprite->x + vmi.XResolution * (row + sprite->y)), 
+					sprite->map + bytes_per_sprite_line * row,
+					bytes_per_sprite_line);
 		}
 	}
 	return OK;
