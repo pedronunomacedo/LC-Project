@@ -17,7 +17,7 @@ void (kbd_ih)(void) {
 
 	if (st & KBC_OBF && !(st & KBC_AUX)) {
 		if (util_sys_inb(KBC_OUT_BUF,&keyboard_data) != OK) {
-			printf("Reading Status Register Failed");
+			printf("util_sys_inb: Reading Status Register Failed");
 			return;
 		}
 
@@ -37,7 +37,7 @@ int (kbd_subscribe_int)(uint8_t *bit_no) {
 	kbd_hook_id = *bit_no = KBD_IRQ;
 
 	if (sys_irqsetpolicy(KBD_IRQ, (IRQ_ENABLE | IRQ_EXCLUSIVE), &kbd_hook_id) != OK) {
-		printf("Keyboard sys_irqsetpolicy failed\n");
+		printf("kbd_subscribe_int: Keyboard sys_irqsetpolicy failed\n");
 		return !OK;
 	}
 	return OK;
@@ -45,7 +45,7 @@ int (kbd_subscribe_int)(uint8_t *bit_no) {
 
 int (kbd_unsubscribe_int)() {
 	if (sys_irqrmpolicy(&kbd_hook_id) != OK) {
-		printf("Keyboard sys_irqsetpolicy failed\n");
+		printf("kbd_unsubscribe_int: Keyboard sys_irqsetpolicy failed\n");
 		return !OK;
 	}
 
