@@ -37,7 +37,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 }
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
-
   timer_hook_id = *bit_no = TIMER0_IRQ;
 
   if (sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &timer_hook_id) != OK) {
@@ -49,7 +48,6 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
 }
 
 int (timer_unsubscribe_int)() {
-
   if (sys_irqrmpolicy(&timer_hook_id) != OK) {
     printf("Timer sys_irqrmpolicy failed");
     return !OK;
